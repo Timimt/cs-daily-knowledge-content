@@ -1,0 +1,88 @@
+{
+  "id": "day-001",
+  "day": 1,
+  "status": "published",
+  "title": "AES 與 RSA 的差異",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-06",
+  "summary": "從對稱式與非對稱式加密的差異出發，理解 AES、RSA 與混合式加密各自負責什麼。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-001-aes-rsa",
+      "type": "inline-svg",
+      "variant": "symmetric-vs-asymmetric",
+      "alt": "AES 使用雙方共用的秘密金鑰；RSA 使用成對的公鑰與私鑰。",
+      "caption": "圖 1：AES 的秘密金鑰必須安全共享；RSA 將可公開的公鑰與必須保密的私鑰分開。"
+    }
+  ],
+  "references": [
+    {
+      "title": "FIPS 197: Advanced Encryption Standard",
+      "publisher": "NIST",
+      "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf"
+    },
+    {
+      "title": "Recommendation for Key Management, Part 1",
+      "publisher": "NIST",
+      "url": "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-57pt1r5.pdf"
+    },
+    {
+      "title": "PKCS #1: RSA Cryptography Specifications Version 2.2",
+      "publisher": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc8017"
+    }
+  ],
+  "relatedTopics": [
+    "混合式加密",
+    "TLS",
+    "數位簽章",
+    "金鑰管理"
+  ],
+  "tags": [
+    "AES",
+    "RSA",
+    "對稱式加密",
+    "非對稱式加密",
+    "密碼學",
+    "TLS"
+  ],
+  "quiz": [
+    {
+      "id": "day-001-q1",
+      "prompt": "下列哪一項最能描述 AES 的金鑰關係？",
+      "options": [
+        "傳送端使用公鑰，接收端使用私鑰",
+        "雙方使用同一把對稱秘密金鑰",
+        "只需要雜湊值，不需要金鑰",
+        "金鑰只能由憑證授權機構保管"
+      ],
+      "correctOption": 1,
+      "explanation": "AES 是對稱式加密。傳送端與接收端必須取得相同的秘密金鑰，並透過安全方式管理與更新它。"
+    },
+    {
+      "id": "day-001-q2",
+      "prompt": "混合式加密中，RSA 最常扮演哪個角色？",
+      "options": [
+        "直接加密所有大型影片檔",
+        "保護短期 AES 工作金鑰或協助驗證身分",
+        "取代作業系統的存取權限",
+        "把密文變成不可讀的網址"
+      ],
+      "correctOption": 1,
+      "explanation": "RSA 運算成本較高，較適合處理少量金鑰資料或用於簽章。大量內容通常交給 AES，再用 RSA 等機制保護 AES 金鑰。"
+    },
+    {
+      "id": "day-001-q3",
+      "prompt": "為什麼 TLS 類協定通常不會只用 RSA 直接加密整個網頁連線內容？",
+      "options": [
+        "因為 RSA 不能處理任何數字",
+        "因為對稱式加密處理大量資料更有效率，RSA 可協助建立或保護工作金鑰",
+        "因為 AES 只能用來簽章",
+        "因為公鑰不能公開"
+      ],
+      "correctOption": 1,
+      "explanation": "對稱式加密適合大量資料；非對稱式機制與金鑰協定可協助雙方建立安全的共同金鑰。實際 TLS 設計還包含認證、AEAD 與前向保密等考量。"
+    }
+  ]
+}

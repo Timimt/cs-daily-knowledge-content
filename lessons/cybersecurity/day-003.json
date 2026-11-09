@@ -1,0 +1,89 @@
+{
+  "id": "day-003",
+  "day": 3,
+  "status": "published",
+  "title": "勒索病毒的混合式加密流程",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-08",
+  "summary": "拆解勒索病毒如何結合 AES 與 RSA 加密檔案，並從備份、權限與事件處理角度建立防禦思維。",
+  "estimatedMinutes": 8,
+  "images": [
+    {
+      "id": "day-003-ransomware-flow",
+      "type": "inline-svg",
+      "variant": "ransomware-hybrid-flow",
+      "alt": "勒索病毒以 AES 加密檔案，再用攻擊者 RSA 公鑰包裝 AES 工作金鑰。",
+      "caption": "圖 1：勒索流程將大量檔案交給 AES 加密，再利用 RSA 公鑰保護工作金鑰。"
+    }
+  ],
+  "references": [
+    {
+      "title": "Ransomware Protection and Response",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/stopransomware/ransomware-guide"
+    },
+    {
+      "title": "Data Backup Options",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/resources-tools/resources/data-backup-options"
+    },
+    {
+      "title": "FIPS 197: Advanced Encryption Standard",
+      "publisher": "NIST",
+      "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf"
+    }
+  ],
+  "relatedTopics": [
+    "混合式加密",
+    "備份",
+    "網路分段",
+    "事件回應",
+    "數位鑑識"
+  ],
+  "tags": [
+    "勒索病毒",
+    "ransomware",
+    "AES",
+    "RSA",
+    "備份",
+    "事件回應"
+  ],
+  "quiz": [
+    {
+      "id": "day-003-q1",
+      "prompt": "勒索病毒採用混合式加密時，最常見的分工是什麼？",
+      "options": [
+        "AES 產生作業系統權限，RSA 建立檔案",
+        "AES 加密檔案，RSA 公鑰保護 AES 工作金鑰",
+        "RSA 只用來壓縮圖片，AES 負責解密備份",
+        "兩者都只能用來產生網頁密碼"
+      ],
+      "correctOption": 1,
+      "explanation": "大量檔案適合用 AES 處理；RSA 可用來保護 AES 工作金鑰。實際惡意程式可能批次處理或使用不同金鑰策略，但核心是分層保護。"
+    },
+    {
+      "id": "day-003-q2",
+      "prompt": "為什麼攻擊者通常不把 RSA 私鑰直接留在受害電腦？",
+      "options": [
+        "因為私鑰會讓 CPU 速度變慢",
+        "因為受害者若取得私鑰，就可能解密被包裝的工作金鑰",
+        "因為 RSA 私鑰必須公開",
+        "因為私鑰只能加密圖片"
+      ],
+      "correctOption": 1,
+      "explanation": "RSA 私鑰是解密或簽章的重要秘密。若受害者取得私鑰與包裝後的金鑰，就可能恢復 AES 工作金鑰。"
+    },
+    {
+      "id": "day-003-q3",
+      "prompt": "哪一種備份策略最能降低勒索病毒刪除或加密備份的風險？",
+      "options": [
+        "每天把備份硬碟長時間接在同一台工作站",
+        "使用離線備份或不可變備份，並讓日常帳號無法任意刪除",
+        "只用同一個管理員帳號備份到同一顆系統碟",
+        "把唯一備份放在原本的資料夾旁邊"
+      ],
+      "correctOption": 1,
+      "explanation": "離線或不可變備份可降低惡意程式透過同一帳號與網路路徑破壞備份的機會。備份仍要定期測試復原，不能只看檔案是否存在。"
+    }
+  ]
+}
