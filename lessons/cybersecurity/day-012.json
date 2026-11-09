@@ -1,0 +1,82 @@
+{
+  "id": "day-012",
+  "day": 12,
+  "status": "published",
+  "title": "釣魚郵件與網域判讀",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-16",
+  "summary": "建立辨識釣魚郵件的檢查清單：真正網域、寄件者、緊迫感、附件與驗證碼要求。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-012-phishing",
+      "type": "external",
+      "src": "./diagrams/day-012-phishing.svg",
+      "alt": "釣魚郵件用假連結與緊迫感，把使用者導向偽裝的登入頁。",
+      "caption": "圖 1：顯示文字與實際網址可以不同；真正要檢查的是你將前往的網域。"
+    }
+  ],
+  "references": [
+    {
+      "title": "Recognize and Report Phishing",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/secure-our-world/recognize-and-report-phishing"
+    },
+    {
+      "title": "URL Standard",
+      "publisher": "WHATWG",
+      "url": "https://url.spec.whatwg.org/"
+    }
+  ],
+  "relatedTopics": [
+    "社交工程",
+    "MFA",
+    "電子郵件驗證",
+    "惡意程式"
+  ],
+  "tags": [
+    "釣魚",
+    "phishing",
+    "網域",
+    "HTTPS",
+    "郵件安全"
+  ],
+  "quiz": [
+    {
+      "id": "day-012-q1",
+      "prompt": "看到連結文字寫著 bank.com，最重要的檢查是什麼？",
+      "options": [
+        "文字大小是否夠大",
+        "滑鼠移過去顯示的實際目標網址",
+        "網頁背景顏色",
+        "郵件是否使用繁體中文"
+      ],
+      "correctOption": 1,
+      "explanation": "顯示文字可任意設定，實際目標網域才是判斷重點。"
+    },
+    {
+      "id": "day-012-q2",
+      "prompt": "假網站如果也有 HTTPS 鎖頭，代表什麼？",
+      "options": [
+        "網站一定安全可信",
+        "只代表連線有加密，不證明網站是正版",
+        "網站一定經過政府認證",
+        "網站一定沒有惡意程式"
+      ],
+      "correctOption": 1,
+      "explanation": "TLS 保護傳輸內容，不認證經營者的意圖；攻擊者也能取得有效憑證。"
+    },
+    {
+      "id": "day-012-q3",
+      "prompt": "收到「不立刻輸入驗證碼就停用帳號」的訊息，第一步最好怎麼做？",
+      "options": [
+        "馬上把驗證碼輸入連結的頁面",
+        "先冷靜，改用官方 App 或自行輸入官方網址確認",
+        "立刻回信問對方要多少錢",
+        "把密碼一起回覆給對方"
+      ],
+      "correctOption": 1,
+      "explanation": "緊迫感是釣魚常見手法。使用已知的官方管道重新登入，是最穩妥的確認方式。"
+    }
+  ]
+}

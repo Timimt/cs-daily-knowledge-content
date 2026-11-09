@@ -1,0 +1,82 @@
+{
+  "id": "day-015",
+  "day": 15,
+  "status": "published",
+  "title": "SQL Injection 與參數化查詢",
+  "category": "資料庫與資訊系統",
+  "lessonDate": "2026-11-19",
+  "summary": "理解 SQL Injection 的根本原因，學會用參數化查詢把資料與指令分開。",
+  "estimatedMinutes": 11,
+  "images": [
+    {
+      "id": "day-015-sqli",
+      "type": "external",
+      "src": "./diagrams/day-015-sqli.svg",
+      "alt": "使用者輸入不應拼進 SQL 指令，而應作為參數綁定傳入。",
+      "caption": "圖 1：左邊把輸入混進指令，右邊把輸入當參數；結果完全不同。"
+    }
+  ],
+  "references": [
+    {
+      "title": "OWASP SQL Injection Prevention Cheat Sheet",
+      "publisher": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html"
+    },
+    {
+      "title": "OWASP Top 10: A03 Injection",
+      "publisher": "OWASP",
+      "url": "https://owasp.org/Top10/A03_2021-Injection/"
+    }
+  ],
+  "relatedTopics": [
+    "輸入驗證",
+    "最小權限",
+    "XSS",
+    "命令注入"
+  ],
+  "tags": [
+    "SQL",
+    "injection",
+    "參數化查詢",
+    "prepared statements",
+    "資料庫"
+  ],
+  "quiz": [
+    {
+      "id": "day-015-q1",
+      "prompt": "SQL Injection 的根本原因是什麼？",
+      "options": [
+        "資料庫太老舊",
+        "使用者輸入被當成 SQL 指令的一部分執行",
+        "密碼長度太短",
+        "伺服器沒有安裝防毒軟體"
+      ],
+      "correctOption": 1,
+      "explanation": "當資料與指令的邊界消失，輸入就可以改變查詢的意義。"
+    },
+    {
+      "id": "day-015-q2",
+      "prompt": "參數化查詢為什麼能阻止注入？",
+      "options": [
+        "它會把輸入自動翻譯成英文",
+        "輸入只作為參數值傳遞，不參與查詢結構的解析",
+        "它會刪除所有空白字元",
+        "它要求使用者先登入"
+      ],
+      "correctOption": 1,
+      "explanation": "查詢結構先固定，輸入由驅動程式以參數綁定，任何特殊字元都不會改變指令。"
+    },
+    {
+      "id": "day-015-q3",
+      "prompt": "使用 ORM 就一定不會有 SQL Injection 嗎？",
+      "options": [
+        "一定不會，ORM 自動擋下一切",
+        "不一定；動態拼接或未綁定的原生查詢仍可能不安全",
+        "會，ORM 本身就是漏洞",
+        "只有資料庫是 MySQL 時才會"
+      ],
+      "correctOption": 1,
+      "explanation": "ORM 提供便利，但安全仍取決於是否用參數綁定，而不是工具名稱。"
+    }
+  ]
+}

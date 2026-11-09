@@ -1,0 +1,82 @@
+{
+  "id": "day-019",
+  "day": 19,
+  "status": "published",
+  "title": "最小權限：只給剛好需要的",
+  "category": "作業系統與 Windows",
+  "lessonDate": "2026-11-23",
+  "summary": "認識最小權限原則，了解日常帳號、服務帳號與權限稽核如何限制災難範圍。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-019-least",
+      "type": "external",
+      "src": "./diagrams/day-019-least-privilege.svg",
+      "alt": "同一個程式在完整權限與最小權限下，能碰到的範圍差異。",
+      "caption": "圖 1：權限愈大，漏洞造成的影響範圍就愈大；最小權限把傷害關在必要範圍內。"
+    }
+  ],
+  "references": [
+    {
+      "title": "NIST CSRC: Least Privilege",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/glossary/term/least_privilege"
+    },
+    {
+      "title": "Least privilege administration model",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/windows-server/identity/ad-ds/plan/security-best-practices/implementing-least-privilege-administrative-models"
+    }
+  ],
+  "relatedTopics": [
+    "存取控制",
+    "UAC",
+    "sudo",
+    "稽核"
+  ],
+  "tags": [
+    "最小權限",
+    "least privilege",
+    "UAC",
+    "sudo",
+    "權限管理"
+  ],
+  "quiz": [
+    {
+      "id": "day-019-q1",
+      "prompt": "最小權限原則的核心是什麼？",
+      "options": [
+        "每個人都擁有最高權限",
+        "只授予完成任務所需的最低必要權限",
+        "把所有權限集中到一個人",
+        "完全不設定任何權限"
+      ],
+      "correctOption": 1,
+      "explanation": "權限剛好夠用，能縮小失誤或漏洞造成的影響範圍。"
+    },
+    {
+      "id": "day-019-q2",
+      "prompt": "為什麼平常不建議一直使用管理員帳號？",
+      "options": [
+        "因為管理員帳號比較難記",
+        "任何被攻擊的程式都會繼承管理員的大權限，影響範圍更大",
+        "因為管理員帳號不能上網",
+        "因為管理員帳號速度較慢"
+      ],
+      "correctOption": 1,
+      "explanation": "程式繼承執行者的權限；一直跑在最高權限下，等於每個漏洞都是最高風險。"
+    },
+    {
+      "id": "day-019-q3",
+      "prompt": "伺服器上的自動化服務需要什麼帳號？",
+      "options": [
+        "資料庫管理員的完整權限",
+        "只擁有它實際需要的最小權限",
+        "與所有人共用同一個帳號",
+        "完全不需要帳號"
+      ],
+      "correctOption": 1,
+      "explanation": "服務帳號也應最小化，避免一個服務被入侵後直接控制整台主機。"
+    }
+  ]
+}

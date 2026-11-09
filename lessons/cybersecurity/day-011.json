@@ -1,0 +1,82 @@
+{
+  "id": "day-011",
+  "day": 11,
+  "status": "published",
+  "title": "多因素驗證與 TOTP",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-15",
+  "summary": "認識三類驗證因素，搞懂手機驗證器六位數碼背後的 TOTP 原理，以及簡訊、驗證器與安全金鑰的差別。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-011-mfa",
+      "type": "external",
+      "src": "./diagrams/day-011-totp.svg",
+      "alt": "共享秘密與時間區段進入 HMAC，產生六位數驗證碼。",
+      "caption": "圖 1：TOTP 用共享秘密加時間計算；伺服器與手機各自算，再比對結果。"
+    }
+  ],
+  "references": [
+    {
+      "title": "RFC 6238 TOTP",
+      "publisher": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc6238"
+    },
+    {
+      "title": "NIST SP 800-63B Authenticator Guidance",
+      "publisher": "NIST",
+      "url": "https://pages.nist.gov/800-63-3/sp800-63b.html"
+    }
+  ],
+  "relatedTopics": [
+    "HMAC",
+    "憑證",
+    "釣魚",
+    "帳號復原"
+  ],
+  "tags": [
+    "MFA",
+    "TOTP",
+    "驗證器",
+    "安全金鑰",
+    "FIDO2"
+  ],
+  "quiz": [
+    {
+      "id": "day-011-q1",
+      "prompt": "密碼加上第二組密碼，算不算多因素驗證？",
+      "options": [
+        "算，因為有兩組秘密",
+        "不算，兩者都屬於「你知道的」同一個因素",
+        "算，只要長度超過 12 字元",
+        "不一定，要問系統管理員"
+      ],
+      "correctOption": 1,
+      "explanation": "多因素必須涵蓋不同類型的因素，兩組密碼仍是同一類。"
+    },
+    {
+      "id": "day-011-q2",
+      "prompt": "TOTP 驗證碼的主要輸入包含什麼？",
+      "options": [
+        "只有使用者的生日",
+        "共享秘密與目前的時間區段",
+        "使用者所在位置的氣溫",
+        "手機的電量"
+      ],
+      "correctOption": 1,
+      "explanation": "TOTP 把共享秘密與時間區段一起放進 HMAC，再截取成短碼。"
+    },
+    {
+      "id": "day-011-q3",
+      "prompt": "為什麼通常認為安全金鑰對釣魚的防護較強？",
+      "options": [
+        "因為安全金鑰永遠不會弄丟",
+        "因為它會核對真正連線的來源，攻擊者的假網站無法直接重播",
+        "因為它不需要任何密碼",
+        "因為它比簡訊便宜"
+      ],
+      "correctOption": 1,
+      "explanation": "FIDO2 類安全金鑰會驗證連線來源，即使使用者被騙到假網站，金鑰通常也不會對錯誤來源放行。"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="pki-title pki-desc">
+  <title id="pki-title">憑證信任鏈</title>
+  <desc id="pki-desc">根憑證簽發中繼憑證，中繼簽發網站葉憑證；驗證由葉往根回溯。</desc>
+  <rect width="920" height="430" fill="#f3f5ee"/>
+  <rect x="360" y="40" width="200" height="88" rx="16" fill="#10243b"/>
+  <text x="460" y="76" text-anchor="middle" fill="#93e5db" font-size="15" font-weight="700">根憑證 Root</text>
+  <text x="460" y="102" text-anchor="middle" fill="#aebfd0" font-size="12">預先安裝的信任起點</text>
+  <path d="M460 128v42" stroke="#2456a6" stroke-width="3"/>
+  <rect x="360" y="170" width="200" height="88" rx="16" fill="#fff1e7" stroke="#d4872f"/>
+  <text x="460" y="206" text-anchor="middle" fill="#9a5e27" font-size="15" font-weight="700">中繼憑證</text>
+  <text x="460" y="232" text-anchor="middle" fill="#60717d" font-size="12">由根簽發</text>
+  <path d="M460 258v42" stroke="#2456a6" stroke-width="3"/>
+  <rect x="360" y="300" width="200" height="88" rx="16" fill="#e3f5f1" stroke="#0b938b"/>
+  <text x="460" y="336" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">網站憑證 Leaf</text>
+  <text x="460" y="362" text-anchor="middle" fill="#60717d" font-size="12">由中繼簽發</text>
+  <path d="M300 344H230v-86h-60" fill="none" stroke="#0b938b" stroke-width="3" stroke-dasharray="6 6"/>
+  <text x="96" y="236" fill="#0a7d74" font-size="14" font-weight="700">驗證方向</text>
+  <text x="96" y="260" fill="#60717d" font-size="12">從葉往根回溯</text>
+</svg>

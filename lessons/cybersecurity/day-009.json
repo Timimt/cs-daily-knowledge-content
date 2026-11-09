@@ -1,0 +1,82 @@
+{
+  "id": "day-009",
+  "day": 9,
+  "status": "published",
+  "title": "TLS 握手與 HTTPS 的信任來源",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-13",
+  "summary": "拆解 TLS 握手：協商、金鑰交換、憑證驗證與 AEAD，搞懂鎖頭到底代表什麼。",
+  "estimatedMinutes": 12,
+  "images": [
+    {
+      "id": "day-009-tls",
+      "type": "external",
+      "src": "./diagrams/day-009-tls.svg",
+      "alt": "瀏覽器與伺服器交換參數、驗證憑證、共同計算會話金鑰。",
+      "caption": "圖 1：TLS 握手把身分驗證與金鑰交換分開，完成後才進入加密資料階段。"
+    }
+  ],
+  "references": [
+    {
+      "title": "RFC 8446 The Transport Layer Security Protocol Version 1.3",
+      "publisher": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446"
+    },
+    {
+      "title": "RFC 9325 TLS Recommendations",
+      "publisher": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc9325"
+    }
+  ],
+  "relatedTopics": [
+    "憑證鏈",
+    "Diffie-Hellman",
+    "AEAD",
+    "主機名稱驗證"
+  ],
+  "tags": [
+    "TLS",
+    "HTTPS",
+    "握手",
+    "憑證",
+    "AEAD"
+  ],
+  "quiz": [
+    {
+      "id": "day-009-q1",
+      "prompt": "瀏覽器網址列的鎖頭最主要代表什麼？",
+      "options": [
+        "這個網站絕對不會騙人",
+        "目前連線使用了 TLS，且憑證通過基本驗證",
+        "網站內容已經過人工審核",
+        "網站一定是政府機關"
+      ],
+      "correctOption": 1,
+      "explanation": "鎖頭代表連線層的安全，不代表網站內容可信、經營者善良或程式沒有漏洞。"
+    },
+    {
+      "id": "day-009-q2",
+      "prompt": "TLS 中驗證伺服器身分，主要靠什麼？",
+      "options": [
+        "只靠伺服器宣稱自己的名字",
+        "憑證鏈與主機名稱比對",
+        "靠連線速度",
+        "靠作業系統版本"
+      ],
+      "correctOption": 1,
+      "explanation": "瀏覽器會沿著憑證鏈找到信任的根，並檢查憑證是否涵蓋目前存取的網域名稱。"
+    },
+    {
+      "id": "day-009-q3",
+      "prompt": "TLS 握手完成後，為什麼還需要 AEAD？",
+      "options": [
+        "AEAD 能把網站內容翻譯成中文",
+        "它同時保護後續流量的機密性與完整性",
+        "它讓伺服器不再需要憑證",
+        "它取代瀏覽器"
+      ],
+      "correctOption": 1,
+      "explanation": "握手完成後，雙方可使用 AEAD 對資料加密並偵測竄改。"
+    }
+  ]
+}

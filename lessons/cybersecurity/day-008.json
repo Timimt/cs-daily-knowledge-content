@@ -1,0 +1,82 @@
+{
+  "id": "day-008",
+  "day": 8,
+  "status": "published",
+  "title": "數位簽章：私鑰簽、公鑰驗",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-12",
+  "summary": "理解數位簽章如何用私鑰產生、公鑰驗證，以及簽章與加密的根本差異。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-008-signature",
+      "type": "external",
+      "src": "./diagrams/day-008-signature.svg",
+      "alt": "文件先取雜湊，再用私鑰簽名；接收端用公鑰驗證簽章。",
+      "caption": "圖 1：簽章綁定文件與私鑰；驗證者只要公鑰就能檢查，不需要知道私鑰。"
+    }
+  ],
+  "references": [
+    {
+      "title": "FIPS 186-5 Digital Signature Standard",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/fips/186-5/final"
+    },
+    {
+      "title": "RFC 8017 PKCS #1: RSA Cryptography Specifications",
+      "publisher": "RFC Editor",
+      "url": "https://www.rfc-editor.org/rfc/rfc8017"
+    }
+  ],
+  "relatedTopics": [
+    "RSA",
+    "ECDSA",
+    "憑證",
+    "HMAC"
+  ],
+  "tags": [
+    "數位簽章",
+    "RSA-PSS",
+    "ECDSA",
+    "公鑰",
+    "私鑰"
+  ],
+  "quiz": [
+    {
+      "id": "day-008-q1",
+      "prompt": "數位簽章的產生與驗證，通常分別使用哪把鑰匙？",
+      "options": [
+        "產生用公鑰，驗證用私鑰",
+        "產生用私鑰，驗證用公鑰",
+        "兩邊都用同一把私鑰",
+        "完全不需要金鑰"
+      ],
+      "correctOption": 1,
+      "explanation": "只有持有私鑰的人能簽名；任何人都能用對應的公鑰驗證。"
+    },
+    {
+      "id": "day-008-q2",
+      "prompt": "為什麼簽章常先對文件做雜湊？",
+      "options": [
+        "雜湊能讓文件變成可執行程式",
+        "把任意長度的文件變成固定長度的輸入，方便簽章運算",
+        "雜湊可以取代私鑰",
+        "因為手寫簽名一定要寫在雜湊上"
+      ],
+      "correctOption": 1,
+      "explanation": "雜湊提供固定長度的文件摘要，簽章演算法再對摘要運算，實務上更有效率。"
+    },
+    {
+      "id": "day-008-q3",
+      "prompt": "簽章驗證通過時，可以自動推論哪件事？",
+      "options": [
+        "文件內容一定百分之百正確",
+        "簽名者的人品一定可信",
+        "該文件雜湊與對應私鑰產生的簽章相符",
+        "該文件一定來自政府機關"
+      ],
+      "correctOption": 2,
+      "explanation": "簽章驗證只證明數學關係。文件是否可信，還需要確認公鑰屬於誰，以及內容本身是否正確。"
+    }
+  ]
+}

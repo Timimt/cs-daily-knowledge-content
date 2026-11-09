@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 470" role="img" aria-labelledby="tls-title tls-desc">
+  <title id="tls-title">TLS 握手</title>
+  <desc id="tls-desc">瀏覽器與伺服器協商參數、交換金鑰材料、驗證憑證，最後使用 AEAD 加密資料。</desc>
+  <rect width="920" height="470" fill="#eef4fa"/>
+  <rect x="70" y="60" width="230" height="70" rx="16" fill="#e3f5f1" stroke="#0b938b"/>
+  <text x="185" y="102" text-anchor="middle" fill="#0a7d74" font-size="16" font-weight="700">瀏覽器</text>
+  <rect x="620" y="60" width="230" height="70" rx="16" fill="#10243b"/>
+  <text x="735" y="102" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">伺服器</text>
+  <path d="M300 95h320" stroke="#2456a6" stroke-width="3"/>
+  <text x="460" y="80" text-anchor="middle" fill="#2456a6" font-size="13">1 支援參數 + 金鑰交換材料</text>
+  <path d="M620 130H300" stroke="#2456a6" stroke-width="3"/>
+  <text x="460" y="152" text-anchor="middle" fill="#2456a6" font-size="13">2 憑證鏈 + 伺服器金鑰交換材料</text>
+  <text x="460" y="192" text-anchor="middle" fill="#9a5e27" font-size="13">3 驗證憑證與主機名稱</text>
+  <rect x="210" y="226" width="500" height="94" rx="18" fill="#fff1e7" stroke="#d4872f"/>
+  <text x="460" y="262" text-anchor="middle" fill="#9a5e27" font-size="16" font-weight="700">兩端各自計算出共同的會話金鑰</text>
+  <text x="460" y="288" text-anchor="middle" fill="#60717d" font-size="13">核心：Diffie-Hellman 金鑰交換</text>
+  <rect x="210" y="352" width="500" height="70" rx="16" fill="#d9f0ec" stroke="#0b938b"/>
+  <text x="460" y="394" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">4 AEAD 加密 + 完整性驗證</text>
+</svg>

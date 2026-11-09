@@ -1,0 +1,81 @@
+{
+  "id": "day-013",
+  "day": 13,
+  "status": "published",
+  "title": "社交工程：攻擊的對象是人",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-17",
+  "summary": "認識假冒權威、餌、交換與尾隨等手法，建立「換管道確認」的防禦習慣。",
+  "estimatedMinutes": 8,
+  "images": [
+    {
+      "id": "day-013-social",
+      "type": "external",
+      "src": "./diagrams/day-013-social-engineering.svg",
+      "alt": "攻擊者利用緊迫感與假冒身分，誘使目標交出資訊或採取行動。",
+      "caption": "圖 1：防禦的關鍵不是背誦騙術，而是用獨立管道重新確認。"
+    }
+  ],
+  "references": [
+    {
+      "title": "Avoiding Social Engineering and Phishing Attacks",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/news-events/news/avoiding-social-engineering-and-phishing-attacks"
+    },
+    {
+      "title": "Social Engineering",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/glossary/term/social_engineering"
+    }
+  ],
+  "relatedTopics": [
+    "釣魚",
+    "身分驗證",
+    "尾隨",
+    "事件通報"
+  ],
+  "tags": [
+    "社交工程",
+    "假冒權威",
+    "尾隨",
+    "情緒操縱"
+  ],
+  "quiz": [
+    {
+      "id": "day-013-q1",
+      "prompt": "收到自稱銀行的來電要求驗證資料，最穩妥的做法是？",
+      "options": [
+        "直接在電話中提供資料",
+        "掛斷後，使用卡片背面或官方網站的已知電話回撥確認",
+        "把資料念兩遍確保正確",
+        "請對方先提供他的密碼"
+      ],
+      "correctOption": 1,
+      "explanation": "不要使用攻擊者提供的聯絡管道；改用獨立已知管道才能打破欺騙。"
+    },
+    {
+      "id": "day-013-q2",
+      "prompt": "「現在不處理，你的帳號馬上會被停權」這句話最可能是哪種手法？",
+      "options": [
+        "友善的善意提醒",
+        "利用緊迫感壓縮你的思考時間",
+        "標準的系統公告格式",
+        "政府法定的通知方式"
+      ],
+      "correctOption": 1,
+      "explanation": "製造時間壓力是社交工程的常見策略，愈急愈要先停下來。"
+    },
+    {
+      "id": "day-013-q3",
+      "prompt": "尾隨（tailgating）攻擊利用的是什麼？",
+      "options": [
+        "防火牆設定錯誤",
+        "人際禮貌與門禁流程的鬆懈",
+        "資料庫密碼",
+        "網路封包遺失"
+      ],
+      "correctOption": 1,
+      "explanation": "尾隨是指未授權的人跟著有權限者進入管制區域，利用的是流程與人的互動。"
+    }
+  ]
+}

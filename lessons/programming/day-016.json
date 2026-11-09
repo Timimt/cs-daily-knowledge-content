@@ -1,0 +1,82 @@
+{
+  "id": "day-016",
+  "day": 16,
+  "status": "published",
+  "title": "XSS：輸出編碼與三種型態",
+  "category": "程式語言與編譯原理",
+  "lessonDate": "2026-11-20",
+  "summary": "理解 Stored、Reflected、DOM-based XSS，學會依輸出情境編碼，而不是只做關鍵字過濾。",
+  "estimatedMinutes": 11,
+  "images": [
+    {
+      "id": "day-016-xss",
+      "type": "external",
+      "src": "./diagrams/day-016-xss.svg",
+      "alt": "不可信資料進入頁面，未編碼時被當成 HTML 執行。",
+      "caption": "圖 1：問題出在輸出端把資料當程式碼；正確編碼可以切斷這條路。"
+    }
+  ],
+  "references": [
+    {
+      "title": "OWASP Cross Site Scripting Prevention Cheat Sheet",
+      "publisher": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+    },
+    {
+      "title": "OWASP Top 10: A03 Injection",
+      "publisher": "OWASP",
+      "url": "https://owasp.org/Top10/A03_2021-Injection/"
+    }
+  ],
+  "relatedTopics": [
+    "CSRF",
+    "CSP",
+    "輸入驗證",
+    "Cookie 屬性"
+  ],
+  "tags": [
+    "XSS",
+    "輸出編碼",
+    "DOM",
+    "CSP",
+    "HttpOnly"
+  ],
+  "quiz": [
+    {
+      "id": "day-016-q1",
+      "prompt": "XSS 的本質問題是什麼？",
+      "options": [
+        "伺服器硬碟滿了",
+        "不可信資料在輸出時被瀏覽器當成程式碼執行",
+        "使用者密碼設得太簡單",
+        "資料庫速度太慢"
+      ],
+      "correctOption": 1,
+      "explanation": "XSS 發生在資料與程式碼的邊界消失，瀏覽器執行了原本只是資料的內容。"
+    },
+    {
+      "id": "day-016-q2",
+      "prompt": "「把 script 字串全部刪掉」為什麼不是可靠防禦？",
+      "options": [
+        "因為 script 不是真的英文字",
+        "攻擊可以換大小寫、編碼或不同標籤繞過，輸出編碼才能對應每個情境",
+        "因為只有 Firefox 會執行 script",
+        "因為刪除會讓網頁變慢"
+      ],
+      "correctOption": 1,
+      "explanation": "黑名單容易繞過；依 HTML、屬性、JavaScript、URL 等情境正確編碼才是根本做法。"
+    },
+    {
+      "id": "day-016-q3",
+      "prompt": "HttpOnly Cookie 的主要作用是什麼？",
+      "options": [
+        "讓 Cookie 只能透過 HTTPS 傳送",
+        "讓瀏覽器 JavaScript 無法直接讀取該 Cookie",
+        "讓 Cookie 永久不過期",
+        "讓 Cookie 只能在白天使用"
+      ],
+      "correctOption": 1,
+      "explanation": "HttpOnly 阻止前端腳本直接存取 Cookie，可降低 XSS 竊取 session 的影響。"
+    }
+  ]
+}

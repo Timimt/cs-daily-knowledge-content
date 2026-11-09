@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="csrf-title csrf-desc">
+  <title id="csrf-title">CSRF 跨站請求偽造</title>
+  <desc id="csrf-desc">惡意網頁誘使瀏覽器向登入中的網站送出寫入請求；Token 與 SameSite 可阻擋。</desc>
+  <rect width="920" height="430" fill="#f3f5ee"/>
+  <rect x="60" y="60" width="260" height="120" rx="16" fill="#10243b"/>
+  <text x="190" y="104" text-anchor="middle" fill="#93e5db" font-size="15" font-weight="700">惡意網頁</text>
+  <text x="190" y="132" text-anchor="middle" fill="#ffffff" font-size="12">背景偷偷送出請求</text>
+  <text x="190" y="156" text-anchor="middle" fill="#ffffff" font-size="12">「改密碼／轉帳」</text>
+  <rect x="600" y="60" width="260" height="120" rx="16" fill="#e3f5f1" stroke="#0b938b"/>
+  <text x="730" y="104" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">目標網站</text>
+  <text x="730" y="132" text-anchor="middle" fill="#60717d" font-size="12">看到你的 session Cookie</text>
+  <text x="730" y="156" text-anchor="middle" fill="#60717d" font-size="12">誤以為是你本人操作</text>
+  <path d="M320 120h280" stroke="#d4872f" stroke-width="3"/>
+  <text x="460" y="104" text-anchor="middle" fill="#9a5e27" font-size="12">瀏覽器自動附 Cookie</text>
+  <rect x="180" y="260" width="560" height="90" rx="16" fill="#d9f0ec" stroke="#0b938b"/>
+  <text x="460" y="298" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">防禦：CSRF Token + SameSite</text>
+  <text x="460" y="324" text-anchor="middle" fill="#60717d" font-size="12">跨站請求缺少 token，直接拒絕</text>
+</svg>

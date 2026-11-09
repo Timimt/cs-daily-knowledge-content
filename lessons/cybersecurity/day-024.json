@@ -1,0 +1,82 @@
+{
+  "id": "day-024",
+  "day": 24,
+  "status": "published",
+  "title": "事件處理與 STRIDE 威脅建模",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-28",
+  "summary": "認識事件處理的階段，學會用 STRIDE 六類威脅在開發前系統性思考風險。",
+  "estimatedMinutes": 12,
+  "images": [
+    {
+      "id": "day-024-ir",
+      "type": "external",
+      "src": "./diagrams/day-024-incident-stride.svg",
+      "alt": "事件處理五個階段與 STRIDE 六類威脅的對照。",
+      "caption": "圖 1：事件處理告訴我們出事後怎麼走；STRIDE 幫我們在事前找出威脅。"
+    }
+  ],
+  "references": [
+    {
+      "title": "NIST SP 800-61 Incident Handling Guide",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/61/r2/final"
+    },
+    {
+      "title": "Microsoft STRIDE Threat Modeling",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/security/engineering/threat-modeling"
+    }
+  ],
+  "relatedTopics": [
+    "社交工程",
+    "最小權限",
+    "稽核",
+    "惡意程式"
+  ],
+  "tags": [
+    "事件處理",
+    "STRIDE",
+    "威脅建模",
+    "稽核",
+    "incident response"
+  ],
+  "quiz": [
+    {
+      "id": "day-024-q1",
+      "prompt": "事件處理中，確認發生問題後通常先做什麼？",
+      "options": [
+        "立刻刪除所有日誌",
+        "先遏制擴散，再根除與恢復",
+        "馬上宣布公司倒閉",
+        "先升級所有顯示卡驅動"
+      ],
+      "correctOption": 1,
+      "explanation": "先控制損失範圍，之後才進行根除、恢復與檢討。"
+    },
+    {
+      "id": "day-024-q2",
+      "prompt": "STRIDE 是什麼？",
+      "options": [
+        "一種防火牆品牌",
+        "六類威脅的思考清單：偽冒、竄改、否認、洩漏、阻斷、提權",
+        "密碼最少字元數",
+        "網路線的顏色標準"
+      ],
+      "correctOption": 1,
+      "explanation": "STRIDE 幫助開發者在設計階段逐項思考常見威脅類型。"
+    },
+    {
+      "id": "day-024-q3",
+      "prompt": "懷疑系統遭入侵時，為什麼不該急著刪檔或重開機？",
+      "options": [
+        "因為重開機需要管理員密碼",
+        "因為這些動作可能破壞證據與時間線",
+        "因為病毒會重新下載",
+        "因為日誌一定已經消失"
+      ],
+      "correctOption": 1,
+      "explanation": "記憶體、日誌與檔案狀態都可能包含調查線索，應先依流程保留。"
+    }
+  ]
+}

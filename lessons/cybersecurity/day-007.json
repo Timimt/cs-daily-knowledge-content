@@ -1,0 +1,82 @@
+{
+  "id": "day-007",
+  "day": 7,
+  "status": "published",
+  "title": "訊息驗證碼：HMAC 與 AEAD",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-11",
+  "summary": "認識完整性的意義：為什麼需要帶密鑰的 HMAC，以及 AEAD 如何同時提供保密與防竄改。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-007-mac",
+      "type": "external",
+      "src": "./diagrams/day-007-hmac.svg",
+      "alt": "訊息與共享密鑰進入 HMAC，產生標籤，接收端重新計算比對。",
+      "caption": "圖 1：標籤由訊息與密鑰共同產生；接收端重算後比對，才知道內容是否被改。"
+    }
+  ],
+  "references": [
+    {
+      "title": "FIPS 198-1 HMAC",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/fips/198-1/final"
+    },
+    {
+      "title": "NIST SP 800-38D GCM",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/38/d/final"
+    }
+  ],
+  "relatedTopics": [
+    "數位簽章",
+    "AEAD",
+    "SHA-256",
+    "金鑰管理"
+  ],
+  "tags": [
+    "HMAC",
+    "MAC",
+    "完整性",
+    "AEAD",
+    "AES-GCM"
+  ],
+  "quiz": [
+    {
+      "id": "day-007-q1",
+      "prompt": "只用 SHA-256 計算訊息的雜湊並隨訊息送出，為什麼擋不住攻擊者？",
+      "options": [
+        "因為 SHA-256 不支援中文",
+        "因為攻擊者可以自行修改訊息並重新計算雜湊",
+        "因為 SHA-256 太慢",
+        "因為雜湊一定比訊息長"
+      ],
+      "correctOption": 1,
+      "explanation": "沒有密鑰時，雜湊對所有人都可計算，因此只能偵測意外損壞，不能證明訊息未被蓄意修改。"
+    },
+    {
+      "id": "day-007-q2",
+      "prompt": "HMAC 與一般雜湊最大的差異是什麼？",
+      "options": [
+        "HMAC 完全不需要輸入訊息",
+        "HMAC 使用共享密鑰，讓沒有密鑰的人無法偽造標籤",
+        "HMAC 只能處理英文字母",
+        "HMAC 的輸出永遠是明文的長度"
+      ],
+      "correctOption": 1,
+      "explanation": "HMAC 把密鑰納入計算，使驗證碼兼具完整性與真實性，只能由持有密鑰的雙方產生與驗證。"
+    },
+    {
+      "id": "day-007-q3",
+      "prompt": "AEAD（如 AES-GCM）最主要提供什麼？",
+      "options": [
+        "把密鑰自動傳送給所有人",
+        "同時提供機密性與完整性驗證",
+        "讓密文永遠比明文短一半",
+        "取代所有防火牆"
+      ],
+      "correctOption": 1,
+      "explanation": "AEAD 在解密時先驗證標籤，同時處理「看不懂」與「改不動」兩件事。"
+    }
+  ]
+}

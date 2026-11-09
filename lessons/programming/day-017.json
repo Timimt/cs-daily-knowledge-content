@@ -1,0 +1,82 @@
+{
+  "id": "day-017",
+  "day": 17,
+  "status": "published",
+  "title": "CSRF：當瀏覽器自動替你送出請求",
+  "category": "程式語言與編譯原理",
+  "lessonDate": "2026-11-21",
+  "summary": "理解 CSRF 的機制，認識 CSRF Token、SameSite Cookie 與「GET 不改變狀態」等防禦。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-017-csrf",
+      "type": "external",
+      "src": "./diagrams/day-017-csrf.svg",
+      "alt": "惡意網頁利用瀏覽器自動帶上的 Cookie，偽造跨站寫入請求。",
+      "caption": "圖 1：CSRF Token 與 SameSite 讓跨站偽造請求無法通過驗證。"
+    }
+  ],
+  "references": [
+    {
+      "title": "OWASP Cross-Site Request Forgery Prevention Cheat Sheet",
+      "publisher": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html"
+    },
+    {
+      "title": "MDN: SameSite cookies",
+      "publisher": "MDN Web Docs",
+      "url": "https://developer.mozilla.org/docs/Web/HTTP/Cookies"
+    }
+  ],
+  "relatedTopics": [
+    "XSS",
+    "Session",
+    "Cookie 屬性",
+    "同源政策"
+  ],
+  "tags": [
+    "CSRF",
+    "SameSite",
+    "token",
+    "session",
+    "Cookie"
+  ],
+  "quiz": [
+    {
+      "id": "day-017-q1",
+      "prompt": "CSRF 攻擊利用的是什麼特性？",
+      "options": [
+        "瀏覽器會自動為同站請求附上已保存的 Cookie",
+        "DNS 查詢太慢",
+        "伺服器 CPU 過熱",
+        "JavaScript 不能執行"
+      ],
+      "correctOption": 0,
+      "explanation": "登入後，瀏覽器在請求中自動帶上 Cookie；攻擊者利用這個身分送出受害者未授權的操作。"
+    },
+    {
+      "id": "day-017-q2",
+      "prompt": "CSRF Token 為什麼能擋住跨站偽造？",
+      "options": [
+        "因為 token 寫在另一個網站的 Cookie 裡",
+        "因為攻擊者的網頁無法讀取目標網站表單中的 token",
+        "因為 token 只能由防火牆產生",
+        "因為 token 讓 Cookie 自動過期"
+      ],
+      "correctOption": 1,
+      "explanation": "同源政策阻止惡意頁面讀取其他來源的內容，因此拿不到寫入請求所需的 token。"
+    },
+    {
+      "id": "day-017-q3",
+      "prompt": "哪種設計有助於減少 CSRF 風險？",
+      "options": [
+        "用 GET 執行刪除資料",
+        "狀態改變一律用 POST 等寫入方法，並加上 CSRF 防護",
+        "把所有 Cookie 設為 HttpOnly 後就不管寫入",
+        "讓所有 API 都不需要登入"
+      ],
+      "correctOption": 1,
+      "explanation": "GET 不應改變狀態；寫入操作應配合 token 與 SameSite 等防護。"
+    }
+  ]
+}

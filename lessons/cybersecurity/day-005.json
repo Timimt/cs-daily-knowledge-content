@@ -1,0 +1,83 @@
+{
+  "id": "day-005",
+  "day": 5,
+  "status": "published",
+  "title": "雜湊函式與密碼儲存",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-09",
+  "summary": "搞懂雜湊與加密的差別，理解為什麼密碼需要鹽與慢速雜湊，而不是只做一次 SHA-256。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-005-hash-password",
+      "type": "external",
+      "src": "./diagrams/day-005-password-hash.svg",
+      "alt": "密碼加上隨機鹽，經過慢速密碼雜湊後才存入資料庫。",
+      "caption": "圖 1：每個人的鹽不同；雜湊函式刻意變慢，讓大量猜測密碼的成本變高。"
+    }
+  ],
+  "references": [
+    {
+      "title": "NIST SP 800-63B Digital Identity Guidelines",
+      "publisher": "NIST",
+      "url": "https://pages.nist.gov/800-63-3/sp800-63b.html"
+    },
+    {
+      "title": "OWASP Password Storage Cheat Sheet",
+      "publisher": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+    }
+  ],
+  "relatedTopics": [
+    "雜湊碰撞",
+    "HMAC",
+    "鹽與 pepper",
+    "多因素驗證"
+  ],
+  "tags": [
+    "SHA-256",
+    "salt",
+    "scrypt",
+    "bcrypt",
+    "Argon2",
+    "密碼"
+  ],
+  "quiz": [
+    {
+      "id": "day-005-q1",
+      "prompt": "雜湊函式和加密最主要的差別是什麼？",
+      "options": [
+        "雜湊比加密更快，所以可以互相取代",
+        "加密設計成可還原，好的密碼雜湊設計成單向且難以逆推",
+        "雜湊一定需要金鑰，加密不需要金鑰",
+        "兩者完全沒有差別，只是名稱不同"
+      ],
+      "correctOption": 1,
+      "explanation": "加密與解密是一組可逆轉換；密碼雜湊則希望輸出固定長度、單向，且在實務上無法有效率地找回原輸入。"
+    },
+    {
+      "id": "day-005-q2",
+      "prompt": "為每個使用者加不同的鹽，主要是為了什麼？",
+      "options": [
+        "讓雜湊結果完全無法被任何人讀取",
+        "讓相同的密碼產生不同的儲存結果，並使彩虹表與批次猜測失效",
+        "把密碼自動變得更長更難記",
+        "取代 HTTPS 的加密功能"
+      ],
+      "correctOption": 1,
+      "explanation": "鹽讓「同密碼」不等於「同結果」，且攻擊者必須針對每個鹽單獨計算，無法一次猜所有帳號。"
+    },
+    {
+      "id": "day-005-q3",
+      "prompt": "為什麼不建議直接用一次 SHA-256 保存密碼？",
+      "options": [
+        "因為 SHA-256 的輸出太短，無法放進資料庫",
+        "因為它設計得很快，攻擊者可以用大量硬體高速猜測密碼",
+        "因為 SHA-256 每次結果都不一樣",
+        "因為 SHA-256 只能在瀏覽器執行"
+      ],
+      "correctOption": 1,
+      "explanation": "SHA-256 是快速通用雜湊。保存密碼應使用刻意耗費 CPU、記憶體或時間的專用函式，降低大量猜測的效率。"
+    }
+  ]
+}

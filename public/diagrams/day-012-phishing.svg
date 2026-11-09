@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="phish-title phish-desc">
+  <title id="phish-title">釣魚郵件導向假網站</title>
+  <desc id="phish-desc">郵件顯示可信文字，但實際連結指向攻擊者控制的假登入頁。</desc>
+  <rect width="920" height="430" fill="#f3f5ee"/>
+  <rect x="70" y="70" width="280" height="150" rx="18" fill="#ffffff" stroke="#d4872f"/>
+  <text x="210" y="108" text-anchor="middle" fill="#9a5e27" font-size="16" font-weight="700">緊急通知</text>
+  <text x="210" y="138" text-anchor="middle" fill="#16283a" font-size="13">帳號 24 小時內停用！</text>
+  <text x="210" y="164" text-anchor="middle" fill="#2456a6" font-size="13" text-decoration="underline">立即登入 bank.com</text>
+  <text x="210" y="190" text-anchor="middle" fill="#60717d" font-size="11">實際目標：evil-login.example</text>
+  <path d="M350 145h120" stroke="#0b938b" stroke-width="3"/>
+  <rect x="470" y="70" width="300" height="150" rx="18" fill="#fff1e7" stroke="#d4872f"/>
+  <text x="620" y="106" text-anchor="middle" fill="#9a5e27" font-size="15" font-weight="700">偽裝的登入頁</text>
+  <text x="620" y="136" text-anchor="middle" fill="#60717d" font-size="12">要求輸入帳號、密碼、驗證碼</text>
+  <text x="620" y="166" text-anchor="middle" fill="#60717d" font-size="12">可能也有 HTTPS 鎖頭</text>
+  <rect x="250" y="290" width="420" height="70" rx="14" fill="#d9f0ec" stroke="#0b938b"/>
+  <text x="460" y="320" text-anchor="middle" fill="#0a7d74" font-size="14" font-weight="700">正確做法：改從官方 App 登入確認</text>
+  <text x="460" y="344" text-anchor="middle" fill="#60717d" font-size="12">不要點信中的連結</text>
+</svg>

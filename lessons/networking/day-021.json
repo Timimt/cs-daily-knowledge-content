@@ -1,0 +1,82 @@
+{
+  "id": "day-021",
+  "day": 21,
+  "status": "published",
+  "title": "連接埠、防火牆與網路分段",
+  "category": "計算機網路",
+  "lessonDate": "2026-11-25",
+  "summary": "認識連接埠與防火牆的預設拒絕原則，了解分段如何限制攻擊橫向擴散。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-021-firewall",
+      "type": "external",
+      "src": "./diagrams/day-021-firewall.svg",
+      "alt": "網際網路通過防火牆只能抵達開放的網頁服務，資料庫在內部網段受保護。",
+      "caption": "圖 1：預設拒絕只放行必要連接埠；內部再分段，限制入侵後能到達的範圍。"
+    }
+  ],
+  "references": [
+    {
+      "title": "NIST SP 800-41 Guidelines on Firewalls",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/41/r1/final"
+    },
+    {
+      "title": "Network Segmentation Guidance",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/resources-tools/resources/network-segmentation"
+    }
+  ],
+  "relatedTopics": [
+    "DNS",
+    "最小權限",
+    "TLS",
+    "攻擊面"
+  ],
+  "tags": [
+    "防火牆",
+    "連接埠",
+    "網路分段",
+    "預設拒絕",
+    "NAT"
+  ],
+  "quiz": [
+    {
+      "id": "day-021-q1",
+      "prompt": "對外開放的連接埠代表什麼？",
+      "options": [
+        "只是一個沒有意義的數字",
+        "一個可被連線、也可能被攻擊的服務入口",
+        "主機的實體記憶體大小",
+        "網頁的顏色設定"
+      ],
+      "correctOption": 1,
+      "explanation": "每個開放的埠後面都有一個服務，都是潛在攻擊面。"
+    },
+    {
+      "id": "day-021-q2",
+      "prompt": "比較穩健的防火牆策略是什麼？",
+      "options": [
+        "預設全部放行，出事再補規則",
+        "預設拒絕，只開放明確必要的服務",
+        "只擋來自國外的連線",
+        "完全不使用防火牆"
+      ],
+      "correctOption": 1,
+      "explanation": "白名單式的最小開放，能大幅減少意外暴露。"
+    },
+    {
+      "id": "day-021-q3",
+      "prompt": "網路分段的主要好處是什麼？",
+      "options": [
+        "讓所有主機共用同一個密碼",
+        "限制被入侵後能到達的內部範圍，減緩橫向移動",
+        "讓封包永遠不遺失",
+        "取代加密"
+      ],
+      "correctOption": 1,
+      "explanation": "分段在網路層設置邊界，攻擊者即使進入一台主機，也無法直接接觸所有系統。"
+    }
+  ]
+}

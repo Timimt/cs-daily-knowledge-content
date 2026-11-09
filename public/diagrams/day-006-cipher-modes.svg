@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 470" role="img" aria-labelledby="mode-title mode-desc">
+  <title id="mode-title">區塊加密模式</title>
+  <desc id="mode-desc">ECB 各區塊獨立、CBC 前後串接、CTR 產生金鑰流、GCM 另外附加驗證標籤。</desc>
+  <rect width="920" height="470" fill="#eef4fa"/>
+  <text x="460" y="40" text-anchor="middle" fill="#17283a" font-size="20" font-weight="700">同一個 AES，不同模式</text>
+  <rect x="52" y="64" width="192" height="170" rx="18" fill="#ffffff" stroke="#b7c5cc"/>
+  <text x="148" y="96" text-anchor="middle" fill="#9a5e27" font-size="16" font-weight="700">ECB</text>
+  <rect x="80" y="116" width="62" height="62" fill="#dbe7f2"/><rect x="154" y="116" width="62" height="62" fill="#dbe7f2"/>
+  <text x="111" y="150" text-anchor="middle" font-size="12">P1</text><text x="185" y="150" text-anchor="middle" font-size="12">P2</text>
+  <text x="148" y="212" text-anchor="middle" fill="#60717d" font-size="12">各自獨立，重複會洩漏</text>
+  <rect x="264" y="64" width="192" height="170" rx="18" fill="#ffffff" stroke="#b7c5cc"/>
+  <text x="360" y="96" text-anchor="middle" fill="#0a7d74" font-size="16" font-weight="700">CBC</text>
+  <rect x="292" y="116" width="62" height="62" fill="#d9f0ec"/><rect x="366" y="116" width="62" height="62" fill="#d9f0ec"/>
+  <path d="M354 147h12" stroke="#0b938b" stroke-width="3"/>
+  <text x="360" y="212" text-anchor="middle" fill="#60717d" font-size="12">前後串接，IV 不可預測</text>
+  <rect x="476" y="64" width="192" height="170" rx="18" fill="#ffffff" stroke="#b7c5cc"/>
+  <text x="572" y="96" text-anchor="middle" fill="#2456a6" font-size="16" font-weight="700">CTR</text>
+  <text x="572" y="140" text-anchor="middle" fill="#2456a6" font-size="13">計數器 → AES → 金鑰流</text>
+  <text x="572" y="166" text-anchor="middle" fill="#60717d" font-size="12">與明文 XOR</text>
+  <text x="572" y="212" text-anchor="middle" fill="#60717d" font-size="12">nonce 絕對不能重複</text>
+  <rect x="688" y="64" width="192" height="170" rx="18" fill="#10243b"/>
+  <text x="784" y="96" text-anchor="middle" fill="#93e5db" font-size="16" font-weight="700">GCM</text>
+  <text x="784" y="140" text-anchor="middle" fill="#ffffff" font-size="13">機密 + 完整性標籤</text>
+  <text x="784" y="166" text-anchor="middle" fill="#aebfd0" font-size="12">AEAD</text>
+  <text x="784" y="212" text-anchor="middle" fill="#aebfd0" font-size="12">解密前先驗證</text>
+  <text x="460" y="284" text-anchor="middle" fill="#60717d" font-size="14">有加密 ≠ 用對了模式</text>
+</svg>

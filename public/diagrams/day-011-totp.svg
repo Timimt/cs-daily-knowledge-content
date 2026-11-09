@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="totp-title totp-desc">
+  <title id="totp-title">TOTP 驗證碼</title>
+  <desc id="totp-desc">共享秘密與目前時間區段一起進入 HMAC，截取部分結果成為六位數驗證碼。</desc>
+  <rect width="920" height="430" fill="#f3f5ee"/>
+  <rect x="80" y="80" width="220" height="100" rx="16" fill="#fff1e7" stroke="#d4872f"/>
+  <text x="190" y="122" text-anchor="middle" fill="#9a5e27" font-size="15" font-weight="700">共享秘密</text>
+  <text x="190" y="148" text-anchor="middle" fill="#60717d" font-size="12">註冊時已交換</text>
+  <rect x="80" y="220" width="220" height="100" rx="16" fill="#e3f5f1" stroke="#0b938b"/>
+  <text x="190" y="262" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">時間區段</text>
+  <text x="190" y="288" text-anchor="middle" fill="#60717d" font-size="12">通常每 30 秒一個</text>
+  <rect x="400" y="130" width="180" height="110" rx="18" fill="#10243b"/>
+  <text x="490" y="176" text-anchor="middle" fill="#93e5db" font-size="16" font-weight="700">HMAC</text>
+  <text x="490" y="202" text-anchor="middle" fill="#ffffff" font-size="12">計算驗證碼</text>
+  <path d="M300 130h70" stroke="#d4872f" stroke-width="3"/>
+  <path d="M300 270h70" stroke="#0b938b" stroke-width="3"/>
+  <path d="M580 185h70" stroke="#10243b" stroke-width="3"/>
+  <rect x="650" y="130" width="190" height="110" rx="16" fill="#ffffff" stroke="#b7c5cc"/>
+  <text x="745" y="168" text-anchor="middle" fill="#16283a" font-size="13">手機與伺服器各自計算</text>
+  <text x="745" y="200" text-anchor="middle" fill="#0a7d74" font-size="24" font-weight="700">123 456</text>
+  <text x="460" y="320" text-anchor="middle" fill="#60717d" font-size="14">裝置時鐘差太多會造成驗證失敗</text>
+</svg>

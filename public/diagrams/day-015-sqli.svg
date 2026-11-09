@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" role="img" aria-labelledby="sqli-title sqli-desc">
+  <title id="sqli-title">參數化查詢</title>
+  <desc id="sqli-desc">動態拼接讓輸入成為指令；參數化查詢則把輸入當成資料值。</desc>
+  <rect width="920" height="430" fill="#f3f5ee"/>
+  <rect x="40" y="60" width="390" height="140" rx="18" fill="#fff1e7" stroke="#d4872f"/>
+  <text x="235" y="92" text-anchor="middle" fill="#9a5e27" font-size="15" font-weight="700">不安全：字串拼接</text>
+  <text x="235" y="124" text-anchor="middle" fill="#60717d" font-size="12">SELECT … name = ' + 輸入 + '</text>
+  <text x="235" y="154" text-anchor="middle" fill="#16283a" font-size="12">輸入的引號可能改寫指令</text>
+  <rect x="490" y="60" width="390" height="140" rx="18" fill="#d9f0ec" stroke="#0b938b"/>
+  <text x="685" y="92" text-anchor="middle" fill="#0a7d74" font-size="15" font-weight="700">安全：參數化</text>
+  <text x="685" y="124" text-anchor="middle" fill="#60717d" font-size="12">SELECT … name = ?</text>
+  <text x="685" y="154" text-anchor="middle" fill="#16283a" font-size="12">輸入只當參數值傳入</text>
+  <rect x="170" y="270" width="580" height="70" rx="14" fill="#ffffff" stroke="#b7c5cc"/>
+  <text x="460" y="310" text-anchor="middle" fill="#16283a" font-size="14" font-weight="700">永遠不要直接把使用者輸入拼進指令</text>
+</svg>

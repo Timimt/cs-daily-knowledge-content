@@ -1,0 +1,82 @@
+{
+  "id": "day-014",
+  "day": 14,
+  "status": "published",
+  "title": "惡意程式分類與感染路徑",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-18",
+  "summary": "分清病毒、蠕蟲、木馬、勒索病毒與間諜軟體的行為差異，並認識常見感染路徑。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-014-malware",
+      "type": "external",
+      "src": "./diagrams/day-014-malware-types.svg",
+      "alt": "四種惡意程式行為卡片：依附宿主、自行傳播、偽裝、加密勒索。",
+      "caption": "圖 1：這些名稱描述行為傾向，實際樣本可能同時具備多種特徵。"
+    }
+  ],
+  "references": [
+    {
+      "title": "Malware, Phishing, and Ransomware",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/stopransomware"
+    },
+    {
+      "title": "Understanding Malware",
+      "publisher": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/security/engineering/"
+    }
+  ],
+  "relatedTopics": [
+    "勒索病毒",
+    "釣魚",
+    "權限",
+    "事件處理"
+  ],
+  "tags": [
+    "病毒",
+    "蠕蟲",
+    "木馬",
+    "間諜軟體",
+    "malware"
+  ],
+  "quiz": [
+    {
+      "id": "day-014-q1",
+      "prompt": "蠕蟲與病毒的關鍵差異是什麼？",
+      "options": [
+        "蠕蟲只感染手機",
+        "蠕蟲能主動自行傳播，病毒通常依附其他檔案",
+        "病毒一定比蠕蟲大",
+        "兩者完全一樣"
+      ],
+      "correctOption": 1,
+      "explanation": "病毒依賴宿主被執行；蠕蟲會主動透過網路或媒介擴散。"
+    },
+    {
+      "id": "day-014-q2",
+      "prompt": "木馬程式的特點是什麼？",
+      "options": [
+        "只能感染 Linux",
+        "偽裝成正常有用的程式，實際執行攻擊者的意圖",
+        "一定使用實體硬體攻擊",
+        "只會讓電腦變慢"
+      ],
+      "correctOption": 1,
+      "explanation": "木馬靠偽裝取得信任，名稱來自特洛伊木馬的典故。"
+    },
+    {
+      "id": "day-014-q3",
+      "prompt": "懷疑電腦可能感染時，第一步通常建議做什麼？",
+      "options": [
+        "立刻刪掉所有檔案",
+        "先中斷可疑裝置的網路，保留證據，再尋求專業判斷",
+        "把密碼全部貼到社群求助",
+        "繼續正常使用，等它自己好"
+      ],
+      "correctOption": 1,
+      "explanation": "斷網能限制擴散與資料外送，保留現場有助後續分析。"
+    }
+  ]
+}

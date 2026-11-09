@@ -1,0 +1,82 @@
+{
+  "id": "day-023",
+  "day": 23,
+  "status": "published",
+  "title": "3-2-1 備份與還原演練",
+  "category": "資訊安全與密碼學",
+  "lessonDate": "2026-11-27",
+  "summary": "學會 3-2-1 備份原則，認識離線與不可變備份，並把「能還原」當成備份的完成標準。",
+  "estimatedMinutes": 9,
+  "images": [
+    {
+      "id": "day-023-backup",
+      "type": "external",
+      "src": "./diagrams/day-023-backup.svg",
+      "alt": "原始資料、本機備份與異地備份分散在不同媒體與位置。",
+      "caption": "圖 1：3 份資料、2 種媒體、1 份異地，讓單一事件無法一次摧毀所有副本。"
+    }
+  ],
+  "references": [
+    {
+      "title": "Data Backup Options",
+      "publisher": "CISA",
+      "url": "https://www.cisa.gov/resources-tools/resources/data-backup-options"
+    },
+    {
+      "title": "NIST SP 800-209 Security Guidelines for Storage Infrastructure",
+      "publisher": "NIST",
+      "url": "https://csrc.nist.gov/pubs/sp/800/209/final"
+    }
+  ],
+  "relatedTopics": [
+    "勒索病毒",
+    "事件處理",
+    "不可變儲存",
+    "異地備份"
+  ],
+  "tags": [
+    "3-2-1",
+    "備份",
+    "離線備份",
+    "不可變",
+    "還原演練"
+  ],
+  "quiz": [
+    {
+      "id": "day-023-q1",
+      "prompt": "3-2-1 原則中的「2」指的是什麼？",
+      "options": [
+        "每天備份兩次",
+        "使用兩種不同的儲存媒體",
+        "只保留兩天內的資料",
+        "至少兩台電腦同時開機"
+      ],
+      "correctOption": 1,
+      "explanation": "3-2-1 代表 3 份資料、2 種媒體、1 份異地。"
+    },
+    {
+      "id": "day-023-q2",
+      "prompt": "離線備份對勒索病毒的意義是什麼？",
+      "options": [
+        "讓備份檔案更漂亮",
+        "平常不連接主機，減少被惡意程式一起加密或刪除的機會",
+        "讓備份速度變慢所以更安全",
+        "讓所有人都不能讀取備份"
+      ],
+      "correctOption": 1,
+      "explanation": "離線備份不在受感染主機的視野內，是重要的隔離手段。"
+    },
+    {
+      "id": "day-023-q3",
+      "prompt": "為什麼「有備份」還不夠？",
+      "options": [
+        "因為備份一定要放在雲端",
+        "因為必須定期實際測試能否還原，才能證明備份有效",
+        "因為備份檔案不能超過 1GB",
+        "因為只有付費軟體能備份"
+      ],
+      "correctOption": 1,
+      "explanation": "未經演練的備份可能因權限、損壞或流程問題無法還原。"
+    }
+  ]
+}

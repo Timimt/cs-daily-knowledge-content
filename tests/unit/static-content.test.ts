@@ -8,12 +8,12 @@ import {
 } from "../../src/lib/static-content";
 
 describe("GitHub Pages static content", () => {
-  it("publishes the three approved lessons and excludes day-004", () => {
-    expect(staticLessons.map((lesson) => lesson.id)).toEqual([
-      "day-003",
-      "day-002",
-      "day-001",
-    ]);
+  it("publishes the approved lessons and excludes the day-004 draft", () => {
+    expect(staticLessons.length).toBeGreaterThanOrEqual(23);
+    expect(staticLessons[0].id).toBe("day-024");
+    for (const id of ["day-001", "day-002", "day-003"]) {
+      expect(staticLessons.some((lesson) => lesson.id === id)).toBe(true);
+    }
     expect(staticDraftLessonIds).toEqual(["day-004"]);
     expect(staticLessons.some((lesson) => lesson.id === "day-004")).toBe(false);
   });
@@ -45,7 +45,7 @@ describe("GitHub Pages static content", () => {
   });
 
   it("searches content and category metadata without a server", () => {
-    expect(searchStaticLessons("Windows API")).toHaveLength(1);
-    expect(searchStaticLessons("", "資訊安全與密碼學")).toHaveLength(2);
+    expect(searchStaticLessons("Windows API")).toHaveLength(2);
+    expect(searchStaticLessons("", "資訊安全與密碼學").length).toBeGreaterThan(2);
   });
 });

@@ -1,0 +1,82 @@
+{
+  "id": "day-018",
+  "day": 18,
+  "status": "published",
+  "title": "命令注入、路徑穿越與輸入驗證",
+  "category": "程式語言與編譯原理",
+  "lessonDate": "2026-11-22",
+  "summary": "認識命令注入與路徑穿越，學會用參數陣列、白名單與路徑根目錄限制來防禦。",
+  "estimatedMinutes": 10,
+  "images": [
+    {
+      "id": "day-018-injection",
+      "type": "external",
+      "src": "./diagrams/day-018-input-validation.svg",
+      "alt": "使用者輸入不應拼進 shell，應作為獨立參數並用白名單驗證。",
+      "caption": "圖 1：把輸入當資料傳遞，並限制允許的值與路徑範圍。"
+    }
+  ],
+  "references": [
+    {
+      "title": "OWASP Input Validation Cheat Sheet",
+      "publisher": "OWASP",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+    },
+    {
+      "title": "CWE-78 OS Command Injection",
+      "publisher": "MITRE",
+      "url": "https://cwe.mitre.org/data/definitions/78.html"
+    }
+  ],
+  "relatedTopics": [
+    "SQL Injection",
+    "XSS",
+    "最小權限",
+    "檔案上傳"
+  ],
+  "tags": [
+    "命令注入",
+    "路徑穿越",
+    "輸入驗證",
+    "白名單",
+    "參數陣列"
+  ],
+  "quiz": [
+    {
+      "id": "day-018-q1",
+      "prompt": "執行外部程式時，哪種做法比較安全？",
+      "options": [
+        "把使用者輸入拼進 shell 字串",
+        "使用參數陣列，讓輸入只是其中一個參數",
+        "先刪除所有分號再拼字串",
+        "完全信任使用者輸入"
+      ],
+      "correctOption": 1,
+      "explanation": "參數陣列避免 shell 重新解析特殊字元，輸入不會被當成新的指令。"
+    },
+    {
+      "id": "day-018-q2",
+      "prompt": "路徑穿越攻擊常利用什麼？",
+      "options": [
+        "過大的圖片檔",
+        "`../` 或絕對路徑等輸入逃出允許目錄",
+        "網路延遲",
+        "太長的密碼"
+      ],
+      "correctOption": 1,
+      "explanation": "未驗證的路徑輸入可能指向預期目錄以外的檔案。"
+    },
+    {
+      "id": "day-018-q3",
+      "prompt": "為什麼白名單通常比黑名單可靠？",
+      "options": [
+        "因為白名單比較短",
+        "白名單只接受明確允許的值，黑名單容易漏掉變形",
+        "因為黑名單無法用中文",
+        "兩者其實沒有差別"
+      ],
+      "correctOption": 1,
+      "explanation": "黑名單必須猜中所有繞過方式；白名單只放行已知安全的輸入。"
+    }
+  ]
+}
