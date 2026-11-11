@@ -23,7 +23,9 @@ export function LessonCard({
       <div className="lesson-card-eyebrow">
         <span className="lesson-card-code">{lesson.id}</span>
         <span>{lesson.category}</span>
-        {lesson.record.completed && <span className="lesson-card-state">已完成</span>}
+        {variant === "default" && lesson.record.completed && (
+          <span className="lesson-card-state">已完成</span>
+        )}
       </div>
       <Link to={`/lessons/${lesson.id}`} className="lesson-card-link">
         <h2 className="lesson-card-title">

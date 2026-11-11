@@ -1,9 +1,8 @@
 import { HashRouter, NavLink, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import {
-  BarChart3,
   Home,
-  Library,
   Settings,
+  ShieldCheck,
 } from "lucide-react";
 import { useEffect } from "react";
 import { LogoMark } from "../components/LogoMark";
@@ -14,14 +13,12 @@ import {
   StaticDashboardPage,
   StaticKnowledgePage,
   StaticLessonPage,
-  StaticProgressPage,
   StaticSettingsPage,
 } from "./StaticPages";
 
 const navigation = [
   { to: "/", label: "首頁", icon: Home, end: true },
-  { to: "/knowledge", label: "教材", icon: Library },
-  { to: "/progress", label: "學習紀錄", icon: BarChart3 },
+  { to: "/knowledge", label: "資安筆記", icon: ShieldCheck },
   { to: "/settings", label: "設定", icon: Settings },
 ];
 
@@ -52,15 +49,15 @@ function StaticShell() {
                   cn("sidebar-link", "static-sidebar-link", isActive && "is-active")
                 }
               >
-                <Icon size={17} />
+                <Icon size={20} />
                 <span>{item.label}</span>
               </NavLink>
             );
           })}
         </nav>
         <div className="static-sidebar-note">
-          <span>教材保存在 GitHub</span>
-          <span>學習紀錄保存在此裝置</span>
+          <span>內容保存在 GitHub</span>
+          <span>無帳號 · 無追蹤</span>
         </div>
       </aside>
 
@@ -103,7 +100,6 @@ export function StaticApp() {
           <Route index element={<StaticDashboardPage />} />
           <Route path="knowledge" element={<StaticKnowledgePage />} />
           <Route path="lessons/:id" element={<StaticLessonPage />} />
-          <Route path="progress" element={<StaticProgressPage />} />
           <Route path="settings" element={<StaticSettingsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

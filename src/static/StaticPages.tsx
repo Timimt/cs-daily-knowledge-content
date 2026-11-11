@@ -2,78 +2,51 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
-  BarChart3,
-  BookCheck,
-  BookOpen,
-  BrainCircuit,
   CalendarDays,
-  CheckCircle2,
   Clock3,
-  Download,
   ExternalLink,
-  Flame,
-  HardDrive,
-  Library,
   Monitor,
   Moon,
   Search,
   Sun,
-  Upload,
   X,
 } from "lucide-react";
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ChangeEvent,
-} from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import { EmptyState, ErrorState, LoadingState } from "../components/Feedback";
+import { EmptyState, ErrorState } from "../components/Feedback";
 import { LessonCard } from "../components/LessonCard";
 import { LessonDiagrams } from "../components/LessonDiagram";
 import { LessonMarkdown } from "../components/LessonMarkdown";
-import { QuizPanel } from "../components/QuizPanel";
-import { StatusButton } from "../components/StatusButton";
 import { cn } from "../lib/format";
-import { formatDate, formatDateTime } from "../lib/format";
-import {
-  defaultLocalRecord,
-  exportLocalLearning,
-  getLocalProgress,
-  getLocalRecord,
-  importLegacyLearning,
-  markLocalLessonRead,
-  saveLocalQuizSubmission,
-  subscribeLocalLearning,
-  updateLocalRecord,
-} from "../lib/local-learning";
+import { formatDate } from "../lib/format";
 import { extractToc } from "../lib/markdown";
 import {
   getStaticLesson,
-  gradeStaticQuiz,
   searchStaticLessons,
   staticCategories,
   staticLessons,
-  toPublicQuizQuestions,
   type StaticLesson,
 } from "../lib/static-content";
 import { useTheme } from "../lib/theme";
-import type {
-  LearningRecord,
-  LessonSummary,
-  QuizSubmission,
-} from "../shared/types";
+import type { LearningRecord, LessonSummary } from "../shared/types";
 
 const repositoryUrl = "https://github.com/Timimt/cs-daily-knowledge-content";
 
-function useLocalLearningSnapshot() {
-  const [revision, setRevision] = useState(0);
-  useEffect(() => subscribeLocalLearning(() => setRevision((value) => value + 1)), []);
-  return revision;
+function emptyRecord(lessonId: string): LearningRecord {
+  return {
+    lessonId,
+    completed: false,
+    bookmarked: false,
+    lastReadAt: null,
+    readCount: 0,
+    quizScore: null,
+    quizTotal: null,
+    wrongAnswers: [],
+    updatedAt: "",
+  };
 }
 
-function toSummary(lesson: StaticLesson, record: LearningRecord, snippet = lesson.summary): LessonSummary {
+function toSummary(lesson: StaticLesson, snippet = lesson.summary): LessonSummary {
   return {
     id: lesson.id,
     day: lesson.day,
@@ -85,39 +58,31 @@ function toSummary(lesson: StaticLesson, record: LearningRecord, snippet = lesso
     estimatedMinutes: lesson.estimatedMinutes,
     tags: lesson.tags,
     imageCount: lesson.images.length,
-    record,
+    record: emptyRecord(lesson.id),
   };
 }
 
 export function StaticDashboardPage() {
-  useLocalLearningSnapshot();
   const orderedLessons = [...staticLessons].sort((left, right) =>
     right.lessonDate.localeCompare(left.lessonDate),
   );
   const featured = orderedLessons[0];
   const latest = orderedLessons.slice(0, 3);
-  const progress = getLocalProgress();
   const categories = staticCategories();
-  const recent = staticLessons
-    .map((lesson) => ({ lesson, record: getLocalRecord(lesson.id) }))
-    .filter(({ record }) => record.lastReadAt)
-    .sort((left, right) => (right.record.lastReadAt ?? "").localeCompare(left.record.lastReadAt ?? ""))
-    .slice(0, 5);
-  const readCount = progress.records.filter((entry) => entry.lastReadAt).length;
 
   return (
     <div className="page-container static-home">
       <header className="home-masthead">
-        <p className="page-kicker">CS Notes · 資工與資安教材</p>
+        <p className="page-kicker">CS Notes · 資訊安全筆記</p>
         <div className="home-intro-grid">
-          <h1 className="home-title">把學過的東西，整理成能重讀的教材。</h1>
+          <h1 className="home-title">把資安知識整理成能反覆查閱的筆記。</h1>
           <div className="home-intro-copy">
             <p>
-              資訊安全、Windows 與程式基礎的個人筆記。教材保存在 GitHub，
-              閱讀進度留在目前這台裝置。
+              這裡只放我整理過的密碼學、Windows、網路與防禦知識。
+              內容保存在 GitHub，不需要帳號，也不追蹤閱讀行為。
             </p>
             <Link to="/knowledge" className="editorial-text-link">
-              瀏覽全部教材
+              瀏覽所有資安筆記
               <ArrowRight size={16} />
             </Link>
           </div>
@@ -137,7 +102,7 @@ export function StaticDashboardPage() {
             <div className="featured-story-meta">
               <span>{formatDate(featured.lessonDate)}</span>
               <span>{featured.estimatedMinutes} 分鐘閱讀</span>
-              <span>{featured.quiz.length} 題測驗</span>
+              <span>{featured.relatedTopics.slice(0, 2).join(" · ")}</span>
             </div>
             <Link to={`/lessons/${featured.id}`} className="featured-story-link">
               開始閱讀
@@ -172,10 +137,10 @@ export function StaticDashboardPage() {
         <div className="editorial-section-heading">
           <div>
             <p className="section-index">01 / Recently organized</p>
-            <h2 id="latest-title">最近整理</h2>
+            <h2 id="latest-title">最新資安筆記</h2>
           </div>
           <Link to="/knowledge" className="editorial-text-link">
-            完整索引
+            瀏覽完整索引
             <ArrowRight size={15} />
           </Link>
         </div>
@@ -197,67 +162,21 @@ export function StaticDashboardPage() {
         </div>
       </section>
 
-      <div className="home-lower-grid">
-        <section aria-labelledby="recent-title">
-          <div className="editorial-section-heading is-compact">
-            <div>
-              <p className="section-index">02 / Reading trail</p>
-              <h2 id="recent-title">最近的閱讀</h2>
-            </div>
-            <Link to="/progress" className="editorial-text-link">
-              學習紀錄
-              <ArrowRight size={15} />
-            </Link>
-          </div>
-          {recent.length === 0 ? (
-            <div className="inline-empty-state">
-              <BookOpen size={20} />
-              <div>
-                <strong>還沒有閱讀紀錄</strong>
-                <p>從一篇教材開始；進度只會留在這個瀏覽器。</p>
-              </div>
-            </div>
-          ) : (
-            <div className="reading-trail">
-              {recent.map(({ lesson, record }, index) => (
-                <Link key={lesson.id} to={`/lessons/${lesson.id}`} className="reading-trail-row">
-                  <span className="reading-trail-index">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="reading-trail-copy">
-                    <strong>{lesson.title}</strong>
-                    <span>{formatDateTime(record.lastReadAt)} · {record.completed ? "已完成" : "閱讀中"}</span>
-                  </span>
-                  <ArrowRight size={15} />
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <aside className="study-summary" aria-labelledby="study-summary-title">
-          <div className="editorial-section-heading is-compact">
-            <div>
-              <p className="section-index">At a glance</p>
-              <h2 id="study-summary-title">學習概況</h2>
-            </div>
-          </div>
-          <dl className="summary-metrics">
-            <div><dt>曾閱讀</dt><dd>{readCount}<small>篇</small></dd></div>
-            <div><dt>已完成</dt><dd>{progress.completedCount}<small>／{progress.totalLessons}</small></dd></div>
-            <div><dt>連續學習</dt><dd>{progress.streak}<small>天</small></dd></div>
-            <div><dt>測驗平均</dt><dd>{progress.averageQuizPercent === null ? "—" : `${progress.averageQuizPercent}%`}</dd></div>
-          </dl>
-          <p className="summary-footnote">
-            <Flame size={14} />
-            目前只計入此瀏覽器中的閱讀與作答資料。
-          </p>
-        </aside>
-      </div>
+      <section className="collection-scope" aria-labelledby="collection-scope-title">
+        <div>
+          <p className="section-index">02 / Scope</p>
+          <h2 id="collection-scope-title">以資訊安全為核心，保留理解攻防所需的系統基礎。</h2>
+        </div>
+        <p>
+          網站不建立帳號、不保存閱讀進度、收藏或測驗紀錄。
+          想看什麼就直接讀，所有內容都能回到 GitHub 的版本紀錄。
+        </p>
+      </section>
     </div>
   );
 }
 
 export function StaticKnowledgePage() {
-  const revision = useLocalLearningSnapshot();
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -284,23 +203,19 @@ export function StaticKnowledgePage() {
     ? `搜尋「${debouncedQuery}」`
     : category || "所有教材";
 
-  function update(lessonId: string, kind: "completed" | "bookmarked", value: boolean) {
-    updateLocalRecord(lessonId, { [kind]: value });
-  }
-
   return (
     <div className="page-container knowledge-page">
       <header className="knowledge-header">
         <div>
-          <p className="page-kicker">Personal knowledge base</p>
-          <h1 className="page-title">教材索引</h1>
+          <p className="page-kicker">Security knowledge index</p>
+          <h1 className="page-title">資安筆記索引</h1>
           <p className="page-description">
-            由我自行整理、持續修訂的資工筆記。可直接搜尋內容、標記收藏與完成狀態。
+            由我自行整理、持續修訂的資訊安全筆記。可依分類瀏覽，或直接搜尋技術名稱與關鍵概念。
           </p>
         </div>
-        <div className="knowledge-count" aria-label={`共 ${staticLessons.length} 篇公開教材`}>
+        <div className="knowledge-count" aria-label={`共 ${staticLessons.length} 篇公開筆記`}>
           <strong>{String(staticLessons.length).padStart(2, "0")}</strong>
-          <span>篇公開教材</span>
+          <span>篇公開筆記</span>
         </div>
       </header>
 
@@ -355,7 +270,7 @@ export function StaticKnowledgePage() {
 
       {results.length === 0 ? (
         <EmptyState
-          title="找不到相關教材"
+          title="找不到相關筆記"
           message="試試更短的關鍵字、英文技術名稱，或清除分類篩選。"
           action={
             <button type="button" className="secondary-button" onClick={() => { setQuery(""); setCategory(""); }}>
@@ -364,12 +279,11 @@ export function StaticKnowledgePage() {
           }
         />
       ) : (
-        <section className="lesson-grid editorial-lesson-grid" aria-label="教材搜尋結果">
+        <section className="lesson-grid editorial-lesson-grid" aria-label="資安筆記搜尋結果">
           {results.map(({ lesson, snippet }) => (
             <LessonCard
-              key={`${lesson.id}-${revision}`}
-              lesson={toSummary(lesson, getLocalRecord(lesson.id), snippet)}
-              onUpdate={(kind, value) => update(lesson.id, kind, value)}
+              key={lesson.id}
+              lesson={toSummary(lesson, snippet)}
               variant="editorial"
             />
           ))}
@@ -382,52 +296,18 @@ export function StaticKnowledgePage() {
 export function StaticLessonPage() {
   const { id = "" } = useParams();
   const lesson = getStaticLesson(id);
-  const revision = useLocalLearningSnapshot();
-  const markedRead = useRef(false);
-  const [record, setRecord] = useState<LearningRecord>(() => getLocalRecord(id));
-  const [busy, setBusy] = useState<"completed" | "bookmarked" | null>(null);
-
-  useEffect(() => {
-    setRecord(getLocalRecord(id));
-    markedRead.current = false;
-  }, [id]);
-
-  useEffect(() => {
-    if (!lesson || markedRead.current) return;
-    markedRead.current = true;
-    setRecord(markLocalLessonRead(id));
-  }, [id, lesson]);
-
-  useEffect(() => {
-    setRecord(getLocalRecord(id));
-  }, [id, revision]);
-
   const toc = useMemo(() => (lesson ? extractToc(lesson.markdown) : []), [lesson]);
 
   if (!lesson) {
     return (
       <div className="reading-container">
         <ErrorState
-          title="找不到教材"
-          message="這篇教材可能尚未發布，或已從 GitHub 移除。"
-          action={<Link to="/knowledge" className="secondary-button">回到知識庫</Link>}
+          title="找不到筆記"
+          message="這篇筆記可能尚未發布，或已從 GitHub 移除。"
+          action={<Link to="/knowledge" className="secondary-button">回到資安筆記</Link>}
         />
       </div>
     );
-  }
-
-  function toggle(kind: "completed" | "bookmarked") {
-    if (busy) return;
-    setBusy(kind);
-    setRecord(updateLocalRecord(lesson!.id, { [kind]: !record[kind] }));
-    setBusy(null);
-  }
-
-  async function submitAnswers(answers: Record<string, number>): Promise<QuizSubmission> {
-    const submission = gradeStaticQuiz(lesson!, answers);
-    saveLocalQuizSubmission(submission);
-    setRecord(getLocalRecord(lesson!.id));
-    return submission;
   }
 
   const tocContent = (
@@ -460,9 +340,9 @@ export function StaticLessonPage() {
       <div className="reader-utility-bar">
         <Link to="/knowledge" className="lesson-breadcrumb">
           <ArrowLeft size={15} />
-          回到教材索引
+          回到資安筆記
         </Link>
-        <span>收藏、進度與測驗只保存在目前裝置</span>
+        <span>Markdown 原文保存在 GitHub</span>
       </div>
 
       <div className="lesson-layout editorial-lesson-layout">
@@ -471,26 +351,12 @@ export function StaticLessonPage() {
             <div className="reader-kicker">
               <span>{lesson.id}</span>
               <span>{lesson.category}</span>
-              {record.completed && <span>已完成</span>}
             </div>
             <h1>{lesson.title}</h1>
             <p className="lesson-summary">{lesson.summary}</p>
             <div className="reader-meta">
               <span><CalendarDays size={14} />整理於 {formatDate(lesson.lessonDate)}</span>
               <span><Clock3 size={14} />約 {lesson.estimatedMinutes} 分鐘</span>
-              <span><BookOpen size={14} />讀過 {record.readCount} 次</span>
-              {record.quizTotal && (
-                <span>最近測驗 {record.quizScore} / {record.quizTotal}</span>
-              )}
-            </div>
-            <div className="reader-action-row">
-              <div className="lesson-actions">
-                <StatusButton kind="completed" active={record.completed} busy={busy === "completed"} onToggle={() => toggle("completed")} />
-                <StatusButton kind="bookmarked" active={record.bookmarked} busy={busy === "bookmarked"} onToggle={() => toggle("bookmarked")} />
-              </div>
-              {record.lastReadAt && (
-                <p>上次閱讀 {formatDateTime(record.lastReadAt)}</p>
-              )}
             </div>
           </header>
 
@@ -533,27 +399,7 @@ export function StaticLessonPage() {
               </div>
             </section>
 
-            <QuizPanel
-              lessonId={lesson.id}
-              questions={toPublicQuizQuestions(lesson)}
-              onScored={(score, total) => setRecord((current) => ({ ...current, quizScore: score, quizTotal: total }))}
-              submitAnswers={submitAnswers}
-              answerSource="local"
-            />
-
-            <section className="reading-completion">
-              <div>
-                <p className="reader-section-index">End of note</p>
-                <h2>{record.completed ? "這篇已經標記完成。" : "讀到這裡，替這篇筆記做個記號。"}</h2>
-                <p>完成狀態只會保存在目前這個瀏覽器。</p>
-              </div>
-              <button type="button" className="primary-button" onClick={() => toggle("completed")}>
-                <CheckCircle2 size={17} />
-                {record.completed ? "取消完成" : "標記完成"}
-              </button>
-            </section>
-
-            <nav className="lesson-pagination" aria-label="前後篇教材">
+            <nav className="lesson-pagination" aria-label="前後篇筆記">
               {previousLesson ? (
                 <Link to={`/lessons/${previousLesson.id}`} className="lesson-pagination-link">
                   <span>上一篇 · {previousLesson.id}</span>
@@ -580,150 +426,16 @@ export function StaticLessonPage() {
   );
 }
 
-export function StaticProgressPage() {
-  const revision = useLocalLearningSnapshot();
-  const data = getLocalProgress();
-  const readCount = data.records.filter((entry) => entry.lastReadAt).length;
-  const wrongCount = data.records.reduce((sum, entry) => sum + entry.wrongAnswers.length, 0);
-
-  return (
-    <div className="page-container progress-page" data-revision={revision}>
-      <header className="standard-page-header">
-        <p className="page-kicker">Local learning record</p>
-        <h1 className="page-title">學習紀錄</h1>
-        <p className="page-description">
-          整理目前裝置上的閱讀、收藏與測驗狀態。這些資料尚未跨裝置同步。
-        </p>
-      </header>
-
-      <section className="learning-summary" aria-label="學習進度統計">
-        <div><span>連續學習</span><strong>{data.streak}<small>天</small></strong></div>
-        <div><span>完成教材</span><strong>{data.completedCount}<small>／{data.totalLessons}</small></strong></div>
-        <div><span>曾閱讀</span><strong>{readCount}<small>篇</small></strong></div>
-        <div><span>測驗平均</span><strong>{data.averageQuizPercent === null ? "—" : `${data.averageQuizPercent}%`}</strong></div>
-      </section>
-
-      <div className="progress-content-layout">
-        <section aria-labelledby="progress-lessons-title">
-          <div className="editorial-section-heading is-compact">
-            <div>
-              <p className="section-index">Lessons</p>
-              <h2 id="progress-lessons-title">教材進度</h2>
-            </div>
-            <span className="section-counter">{wrongCount} 個待複習錯題</span>
-          </div>
-          <div className="record-list">
-            {data.records.map(({ lesson, lastReadAt, wrongAnswers }) => (
-              <article key={lesson.id} className="record-row">
-                <div className="record-row-main">
-                  <Link to={`/lessons/${lesson.id}`} className="record-row-title">
-                    <span className="record-row-id">{lesson.id}</span>
-                    <span>
-                      <small>{lesson.category}</small>
-                      <strong>{lesson.title}</strong>
-                    </span>
-                  </Link>
-                  <div className="record-row-status">
-                    {lesson.record.completed && <span className="is-complete">已完成</span>}
-                    {lesson.record.bookmarked && <span>已收藏</span>}
-                    {lesson.record.quizTotal ? <span>測驗 {lesson.record.quizScore} / {lesson.record.quizTotal}</span> : <span>尚未測驗</span>}
-                  </div>
-                  <div className="record-row-tail">
-                    <span>最近閱讀</span>
-                    <time>{formatDateTime(lastReadAt)}</time>
-                    <Link to={`/lessons/${lesson.id}`} className="record-open-link" aria-label={`繼續閱讀 ${lesson.title}`}>
-                      繼續閱讀
-                      <ArrowUpRight size={15} />
-                    </Link>
-                  </div>
-                </div>
-                {wrongAnswers.length > 0 && (
-                  <details className="record-wrong-answers">
-                    <summary>查看最近錯題</summary>
-                    <div className="wrong-answer-list">
-                      {wrongAnswers.map((wrong) => (
-                        <div key={wrong.questionId} className="wrong-answer">
-                          {wrong.questionId} · 選擇選項 {wrong.selectedOption + 1}
-                        </div>
-                      ))}
-                    </div>
-                  </details>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="attempts-panel" aria-labelledby="attempts-title">
-          <div className="editorial-section-heading is-compact">
-            <div>
-              <p className="section-index">Quiz attempts</p>
-              <h2 id="attempts-title">測驗紀錄</h2>
-            </div>
-            <BrainCircuit size={18} />
-          </div>
-          {data.attempts.length === 0 ? (
-            <div className="attempt-empty">
-              <p>還沒有測驗紀錄。</p>
-              <span>完成教材後，可以順便回答課後題目。</span>
-            </div>
-          ) : (
-            <div className="attempt-list">
-              {data.attempts.map((attempt) => (
-                <Link key={attempt.id} to={`/lessons/${attempt.lessonId}`} className="attempt-row">
-                  <span>
-                    <strong>{attempt.lessonTitle}</strong>
-                    <small>{formatDateTime(attempt.attemptedAt)}</small>
-                  </span>
-                  <span className="attempt-score">{attempt.score} / {attempt.total}</span>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
-    </div>
-  );
-}
-
 export function StaticSettingsPage() {
   const { mode, setMode } = useTheme();
-  useLocalLearningSnapshot();
-  const [message, setMessage] = useState<string | null>(null);
-  const fileInput = useRef<HTMLInputElement>(null);
-  const snapshot = exportLocalLearning();
-
-  function downloadCurrentData() {
-    const blob = new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `cs-notes-learning-${new Date().toISOString().slice(0, 10)}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  }
-
-  async function importFile(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    try {
-      const parsed = JSON.parse(await file.text());
-      const result = importLegacyLearning(parsed);
-      setMessage(`已匯入 ${result.importedRecords} 筆學習紀錄與 ${result.importedAttempts} 筆測驗紀錄。`);
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "匯入失敗。");
-    } finally {
-      event.target.value = "";
-    }
-  }
 
   return (
     <div className="page-container settings-page">
       <header className="standard-page-header">
-        <p className="page-kicker">Preferences & data</p>
+        <p className="page-kicker">Site preferences</p>
         <h1 className="page-title">設定</h1>
         <p className="page-description">
-          調整閱讀外觀、查看教材來源，或管理目前瀏覽器中的個人學習資料。
+          調整閱讀外觀，或查看這個網站的內容來源與公開方式。
         </p>
       </header>
 
@@ -765,15 +477,15 @@ export function StaticSettingsPage() {
           <header>
             <span>02</span>
             <div>
-              <h2 id="source-settings">教材來源</h2>
-              <p>網站只負責呈現 GitHub 中的 Markdown 教材。</p>
+              <h2 id="source-settings">內容來源</h2>
+              <p>網站只負責呈現 GitHub 中的 Markdown 筆記。</p>
             </div>
           </header>
           <div className="settings-group-body">
             <div className="setting-row">
               <div className="setting-copy">
                 <h3>GitHub · main</h3>
-                <p>教材由我整理後放入 Repository，不是每日自動生成的文章。</p>
+                <p>筆記由我整理後放入 Repository，不是每日自動生成的文章。</p>
               </div>
               <a href={repositoryUrl} target="_blank" rel="noreferrer noopener" className="secondary-button">
                 <ExternalLink size={16} />
@@ -783,42 +495,9 @@ export function StaticSettingsPage() {
           </div>
         </section>
 
-        <section className="settings-group" aria-labelledby="data-settings">
-          <header>
-            <span>03</span>
-            <div>
-              <h2 id="data-settings">本機資料</h2>
-              <p>備份或帶入目前的學習紀錄。</p>
-            </div>
-          </header>
-          <div className="settings-group-body">
-            <div className="setting-row is-stacked">
-              <div className="setting-copy">
-                <h3>學習與測驗資料</h3>
-                <p>
-                  目前有 {snapshot.records.filter((record) => record.lastReadAt || record.completed || record.bookmarked).length} 筆學習紀錄與 {snapshot.attempts.length} 筆測驗紀錄。
-                  匯入功能只會處理 JSON 備份，不會連線到正式資料庫。
-                </p>
-              </div>
-              <div className="setting-actions">
-                <button type="button" className="secondary-button" onClick={downloadCurrentData}>
-                  <Download size={16} />
-                  匯出 JSON
-                </button>
-                <button type="button" className="secondary-button" onClick={() => fileInput.current?.click()}>
-                  <Upload size={16} />
-                  匯入舊備份
-                </button>
-                <input ref={fileInput} type="file" accept="application/json,.json" className="hidden" onChange={(event) => void importFile(event)} />
-              </div>
-              {message && <p className="settings-message">{message}</p>}
-            </div>
-          </div>
-        </section>
-
         <section className="settings-group" aria-labelledby="site-settings">
           <header>
-            <span>04</span>
+            <span>03</span>
             <div>
               <h2 id="site-settings">網站資訊</h2>
               <p>目前公開內容與建置狀態。</p>
@@ -826,10 +505,10 @@ export function StaticSettingsPage() {
           </header>
           <div className="settings-group-body">
             <dl className="site-facts">
-              <div><dt>公開教材</dt><dd>{staticLessons.length} 篇</dd></div>
-              <div><dt>教材來源</dt><dd>GitHub main</dd></div>
+              <div><dt>公開筆記</dt><dd>{staticLessons.length} 篇</dd></div>
+              <div><dt>內容來源</dt><dd>GitHub main</dd></div>
               <div><dt>網站形式</dt><dd>Static · GitHub Pages</dd></div>
-              <div><dt>Draft</dt><dd>不納入公開建置、搜尋與路由</dd></div>
+              <div><dt>個人資料</dt><dd>不收集閱讀、收藏或測驗紀錄</dd></div>
             </dl>
           </div>
         </section>
