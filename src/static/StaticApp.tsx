@@ -33,13 +33,14 @@ function StaticShell() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-dvh bg-[var(--bg)] text-[var(--text)]">
-      <aside className="desktop-sidebar">
-        <div className="flex items-center justify-between px-2">
+    <div className="static-shell">
+      <aside className="desktop-sidebar static-sidebar">
+        <div className="static-sidebar-brand">
           <LogoMark />
-          <ThemeToggle />
+          <ThemeToggle cycleOnly />
         </div>
-        <nav className="mt-10 space-y-1" aria-label="主要導覽">
+        <p className="static-nav-label">INDEX</p>
+        <nav className="static-sidebar-nav" aria-label="主要導覽">
           {navigation.map((item) => {
             const Icon = item.icon;
             return (
@@ -47,35 +48,32 @@ function StaticShell() {
                 key={item.to}
                 to={item.to}
                 end={item.end}
-                className={({ isActive }) => cn("sidebar-link", isActive && "is-active")}
+                className={({ isActive }) =>
+                  cn("sidebar-link", "static-sidebar-link", isActive && "is-active")
+                }
               >
-                <Icon size={18} />
+                <Icon size={17} />
                 <span>{item.label}</span>
               </NavLink>
             );
           })}
         </nav>
-        <div className="mt-auto rounded-2xl border border-[var(--line)] bg-[var(--surface-soft)] p-4">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--text)]">
-            <span className="status-dot" />
-            GitHub Pages · Static
-          </div>
-          <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
-            教材由宇奕整理後放進 GitHub；收藏、進度與測驗只保存在目前的瀏覽器。
-          </p>
+        <div className="static-sidebar-note">
+          <span>教材保存在 GitHub</span>
+          <span>學習紀錄保存在此裝置</span>
         </div>
       </aside>
 
-      <header className="mobile-header">
+      <header className="mobile-header static-mobile-header">
         <LogoMark />
-        <ThemeToggle />
+        <ThemeToggle cycleOnly />
       </header>
 
-      <main className="app-main">
+      <main className="app-main static-main">
         <Outlet />
       </main>
 
-      <nav className="mobile-bottom-nav" aria-label="行動版主要導覽">
+      <nav className="mobile-bottom-nav static-mobile-nav" aria-label="行動版主要導覽">
         {navigation.map((item) => {
           const Icon = item.icon;
           return (
@@ -83,9 +81,11 @@ function StaticShell() {
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) => cn("mobile-nav-link", isActive && "is-active")}
+              className={({ isActive }) =>
+                cn("mobile-nav-link", "static-mobile-nav-link", isActive && "is-active")
+              }
             >
-              <Icon size={20} strokeWidth={2} />
+              <Icon size={19} strokeWidth={1.9} />
               <span>{item.label}</span>
             </NavLink>
           );

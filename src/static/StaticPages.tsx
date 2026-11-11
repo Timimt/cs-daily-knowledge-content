@@ -91,7 +91,11 @@ function toSummary(lesson: StaticLesson, record: LearningRecord, snippet = lesso
 
 export function StaticDashboardPage() {
   useLocalLearningSnapshot();
-  const today = staticLessons[0];
+  const orderedLessons = [...staticLessons].sort((left, right) =>
+    right.lessonDate.localeCompare(left.lessonDate),
+  );
+  const featured = orderedLessons[0];
+  const latest = orderedLessons.slice(0, 3);
   const progress = getLocalProgress();
   const categories = staticCategories();
   const recent = staticLessons
@@ -99,125 +103,154 @@ export function StaticDashboardPage() {
     .filter(({ record }) => record.lastReadAt)
     .sort((left, right) => (right.record.lastReadAt ?? "").localeCompare(left.record.lastReadAt ?? ""))
     .slice(0, 5);
-  const completedPercent =
-    progress.totalLessons === 0
-      ? 0
-      : Math.round((progress.completedCount / progress.totalLessons) * 100);
+  const readCount = progress.records.filter((entry) => entry.lastReadAt).length;
 
   return (
-    <div className="page-container">
-      <header className="mb-5">
-        <p className="page-kicker">宇奕整理的資工與資安教材</p>
-        <h1 className="page-title">把讀過的東西整理成自己的教材。</h1>
+    <div className="page-container static-home">
+      <header className="home-masthead">
+        <p className="page-kicker">CS Notes · 資工與資安教材</p>
+        <div className="home-intro-grid">
+          <h1 className="home-title">把學過的東西，整理成能重讀的教材。</h1>
+          <div className="home-intro-copy">
+            <p>
+              資訊安全、Windows 與程式基礎的個人筆記。教材保存在 GitHub，
+              閱讀進度留在目前這台裝置。
+            </p>
+            <Link to="/knowledge" className="editorial-text-link">
+              瀏覽全部教材
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
       </header>
 
-      <section className="dashboard-hero" aria-labelledby="today-lesson-title">
-        <div className="hero-content">
-          <div className="hero-kicker">
-            <span>{today.id}</span>
-            <span aria-hidden="true">·</span>
-            <span>{today.category}</span>
+      <div className="home-feature-layout">
+        <section className="featured-story" aria-labelledby="featured-lesson-title">
+          <div className="featured-story-label">
+            <span>Featured</span>
+            <span>{featured.id}</span>
+            <span>{featured.category}</span>
           </div>
-          <h2 id="today-lesson-title" className="hero-title">{today.title}</h2>
-          <p className="hero-summary">{today.summary}</p>
-          <div className="hero-actions">
-            <Link to={`/lessons/${today.id}`} className="hero-primary">
-              閱讀這篇教材
-              <ArrowRight size={17} />
+          <h2 id="featured-lesson-title">{featured.title}</h2>
+          <p className="featured-story-summary">{featured.summary}</p>
+          <div className="featured-story-footer">
+            <div className="featured-story-meta">
+              <span>{formatDate(featured.lessonDate)}</span>
+              <span>{featured.estimatedMinutes} 分鐘閱讀</span>
+              <span>{featured.quiz.length} 題測驗</span>
+            </div>
+            <Link to={`/lessons/${featured.id}`} className="featured-story-link">
+              開始閱讀
+              <ArrowUpRight size={17} />
             </Link>
-            <Link to="/knowledge" className="hero-secondary">
-              <Library size={17} />
-              前往知識庫
+          </div>
+        </section>
+
+        <aside className="knowledge-index" aria-labelledby="knowledge-index-title">
+          <div className="knowledge-index-heading">
+            <h2 id="knowledge-index-title">Knowledge index</h2>
+            <span>{staticLessons.length} 篇</span>
+          </div>
+          <Link to="/knowledge" className="knowledge-index-row">
+            <span>全部教材</span>
+            <span>{staticLessons.length}</span>
+          </Link>
+          {categories.map((item) => (
+            <Link
+              key={item.category}
+              to={`/knowledge?category=${encodeURIComponent(item.category)}`}
+              className="knowledge-index-row"
+            >
+              <span>{item.category}</span>
+              <span>{item.count}</span>
             </Link>
+          ))}
+        </aside>
+      </div>
+
+      <section className="latest-section" aria-labelledby="latest-title">
+        <div className="editorial-section-heading">
+          <div>
+            <p className="section-index">01 / Recently organized</p>
+            <h2 id="latest-title">最近整理</h2>
           </div>
-          <div className="mt-5 flex flex-wrap gap-4 text-[11px] font-semibold text-white/60">
-            <span className="inline-flex items-center gap-1.5">
-              <CalendarDays size={14} />
-              {formatDate(today.lessonDate)}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <BookOpen size={14} />
-              預估 {today.estimatedMinutes} 分鐘
-            </span>
-          </div>
+          <Link to="/knowledge" className="editorial-text-link">
+            完整索引
+            <ArrowRight size={15} />
+          </Link>
+        </div>
+        <div className="latest-lesson-list">
+          {latest.map((lesson, index) => (
+            <Link key={lesson.id} to={`/lessons/${lesson.id}`} className="latest-lesson-row">
+              <span className="latest-lesson-number">0{index + 1}</span>
+              <span className="latest-lesson-copy">
+                <span className="latest-lesson-meta">{lesson.id} · {lesson.category}</span>
+                <strong>{lesson.title}</strong>
+                <span>{lesson.summary}</span>
+              </span>
+              <span className="latest-lesson-date">
+                {formatDate(lesson.lessonDate)}
+                <ArrowUpRight size={15} />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 
-      <section className="stats-grid" aria-label="學習統計">
-        <article className="stat-card">
-          <span className="stat-icon"><Flame size={18} /></span>
-          <div className="stat-value">{progress.streak}</div>
-          <p className="stat-label">連續學習天數</p>
-        </article>
-        <article className="stat-card">
-          <span className="stat-icon"><BookCheck size={18} /></span>
-          <div className="stat-value">
-            {progress.completedCount}
-            <span className="text-sm font-medium text-[var(--muted)]"> / {progress.totalLessons}</span>
-          </div>
-          <p className="stat-label">已完成課程</p>
-        </article>
-        <article className="stat-card">
-          <span className="stat-icon"><Library size={18} /></span>
-          <div className="stat-value">{categories.length}</div>
-          <p className="stat-label">學習分類</p>
-        </article>
-        <article className="stat-card">
-          <span className="stat-icon"><BarChart3 size={18} /></span>
-          <div className="stat-value">{completedPercent}%</div>
-          <p className="stat-label">整體完成率</p>
-        </article>
-      </section>
-
-      <div className="dashboard-columns mt-8">
+      <div className="home-lower-grid">
         <section aria-labelledby="recent-title">
-          <div className="section-heading-row">
-            <h2 id="recent-title" className="section-heading">最近學習</h2>
-            <Link to="/progress" className="section-link">查看全部 <ArrowRight size={14} /></Link>
+          <div className="editorial-section-heading is-compact">
+            <div>
+              <p className="section-index">02 / Reading trail</p>
+              <h2 id="recent-title">最近的閱讀</h2>
+            </div>
+            <Link to="/progress" className="editorial-text-link">
+              學習紀錄
+              <ArrowRight size={15} />
+            </Link>
           </div>
           {recent.length === 0 ? (
-            <div className="surface-card px-5 py-8 text-center">
-              <BookOpen className="mx-auto text-[var(--muted)]" size={25} />
-              <p className="mt-3 text-sm font-semibold">還沒有閱讀紀錄</p>
-              <p className="mt-1 text-xs leading-6 text-[var(--muted)]">
-                打開任何教材後，進度會保存在此瀏覽器。
-              </p>
+            <div className="inline-empty-state">
+              <BookOpen size={20} />
+              <div>
+                <strong>還沒有閱讀紀錄</strong>
+                <p>從一篇教材開始；進度只會留在這個瀏覽器。</p>
+              </div>
             </div>
           ) : (
-            <div className="recent-list">
-              {recent.map(({ lesson, record }) => (
-                <Link key={lesson.id} to={`/lessons/${lesson.id}`} className="recent-row">
-                  <span className="recent-day">{lesson.id}</span>
-                  <div className="min-w-0">
-                    <h3>{lesson.title}</h3>
-                    <p>{formatDateTime(record.lastReadAt)} · {record.completed ? "已完成" : "閱讀中"}</p>
-                  </div>
-                  <ArrowRight className="text-[var(--muted)]" size={16} />
+            <div className="reading-trail">
+              {recent.map(({ lesson, record }, index) => (
+                <Link key={lesson.id} to={`/lessons/${lesson.id}`} className="reading-trail-row">
+                  <span className="reading-trail-index">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="reading-trail-copy">
+                    <strong>{lesson.title}</strong>
+                    <span>{formatDateTime(record.lastReadAt)} · {record.completed ? "已完成" : "閱讀中"}</span>
+                  </span>
+                  <ArrowRight size={15} />
                 </Link>
               ))}
             </div>
           )}
         </section>
 
-        <section className="surface-card p-5" aria-labelledby="category-title">
-          <div className="section-heading-row">
-            <h2 id="category-title" className="section-heading">分類分布</h2>
-          </div>
-          {categories.map((item) => (
-            <div key={item.category} className="category-row">
-              <div className="category-row-header">
-                <span>{item.category}</span>
-                <span className="text-[var(--muted)]">{item.count} 篇</span>
-              </div>
-              <div className="category-track">
-                <div
-                  className="category-fill"
-                  style={{ width: `${Math.round((item.count / staticLessons.length) * 100)}%` }}
-                />
-              </div>
+        <aside className="study-summary" aria-labelledby="study-summary-title">
+          <div className="editorial-section-heading is-compact">
+            <div>
+              <p className="section-index">At a glance</p>
+              <h2 id="study-summary-title">學習概況</h2>
             </div>
-          ))}
-        </section>
+          </div>
+          <dl className="summary-metrics">
+            <div><dt>曾閱讀</dt><dd>{readCount}<small>篇</small></dd></div>
+            <div><dt>已完成</dt><dd>{progress.completedCount}<small>／{progress.totalLessons}</small></dd></div>
+            <div><dt>連續學習</dt><dd>{progress.streak}<small>天</small></dd></div>
+            <div><dt>測驗平均</dt><dd>{progress.averageQuizPercent === null ? "—" : `${progress.averageQuizPercent}%`}</dd></div>
+          </dl>
+          <p className="summary-footnote">
+            <Flame size={14} />
+            目前只計入此瀏覽器中的閱讀與作答資料。
+          </p>
+        </aside>
       </div>
     </div>
   );
@@ -256,52 +289,68 @@ export function StaticKnowledgePage() {
   }
 
   return (
-    <div className="page-container">
-      <header>
-        <p className="page-kicker">自己整理的教材</p>
-        <h1 className="page-title">資工與資安筆記</h1>
-        <p className="page-description">
-          這些教材由我自己整理，Markdown 放在 GitHub。搜尋、收藏與完成狀態都在瀏覽器執行。
-        </p>
+    <div className="page-container knowledge-page">
+      <header className="knowledge-header">
+        <div>
+          <p className="page-kicker">Personal knowledge base</p>
+          <h1 className="page-title">教材索引</h1>
+          <p className="page-description">
+            由我自行整理、持續修訂的資工筆記。可直接搜尋內容、標記收藏與完成狀態。
+          </p>
+        </div>
+        <div className="knowledge-count" aria-label={`共 ${staticLessons.length} 篇公開教材`}>
+          <strong>{String(staticLessons.length).padStart(2, "0")}</strong>
+          <span>篇公開教材</span>
+        </div>
       </header>
 
-      <section className="search-panel mt-6" aria-label="知識庫搜尋與篩選">
-        <div className="search-input-wrap">
+      <section className="knowledge-toolbar" aria-label="知識庫搜尋與篩選">
+        <div className="knowledge-search">
           <Search size={18} />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="search-input"
-            placeholder="搜尋 RSA、AES、Windows API、勒索病毒…"
+            className="knowledge-search-input"
+            placeholder="搜尋 AES、Windows API、勒索病毒…"
             aria-label="搜尋教材"
           />
           {query && (
-            <button type="button" className="search-clear" onClick={() => setQuery("")} aria-label="清除搜尋">
-              <X size={17} />
+            <button type="button" className="knowledge-search-clear" onClick={() => setQuery("")} aria-label="清除搜尋">
+              <X size={16} />
             </button>
           )}
         </div>
-        <div className="filter-strip" role="group" aria-label="依分類篩選">
-          <button type="button" className={cn("filter-chip", !category && "is-active")} onClick={() => setCategory("")}>
+
+        <div className="category-tabs" role="group" aria-label="依分類篩選">
+          <button
+            type="button"
+            className={cn("category-tab", !category && "is-active")}
+            onClick={() => setCategory("")}
+          >
             全部
+            <span>{staticLessons.length}</span>
           </button>
           {categories.map((item) => (
             <button
               type="button"
               key={item.category}
-              className={cn("filter-chip", category === item.category && "is-active")}
+              className={cn("category-tab", category === item.category && "is-active")}
               onClick={() => setCategory((current) => current === item.category ? "" : item.category)}
             >
-              {item.category} · {item.count}
+              {item.category}
+              <span>{item.count}</span>
             </button>
           ))}
         </div>
       </section>
 
-      <div className="mb-2 mt-6 flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold text-[var(--muted)]">{resultDescription}</p>
-        <p className="text-xs text-[var(--muted)]">{results.length} 篇</p>
+      <div className="knowledge-result-bar">
+        <p>
+          <span>{resultDescription}</span>
+          {debouncedQuery && <button type="button" onClick={() => setQuery("")}>清除搜尋</button>}
+        </p>
+        <p>{results.length} 篇結果</p>
       </div>
 
       {results.length === 0 ? (
@@ -315,12 +364,13 @@ export function StaticKnowledgePage() {
           }
         />
       ) : (
-        <section className="lesson-grid" aria-label="教材搜尋結果">
+        <section className="lesson-grid editorial-lesson-grid" aria-label="教材搜尋結果">
           {results.map(({ lesson, snippet }) => (
             <LessonCard
               key={`${lesson.id}-${revision}`}
               lesson={toSummary(lesson, getLocalRecord(lesson.id), snippet)}
               onUpdate={(kind, value) => update(lesson.id, kind, value)}
+              variant="editorial"
             />
           ))}
         </section>
@@ -398,46 +448,54 @@ export function StaticLessonPage() {
     </ul>
   );
 
-  return (
-    <div className="reading-container">
-      <Link to="/knowledge" className="lesson-breadcrumb">
-        <ArrowLeft size={15} />
-        回到知識庫
-      </Link>
+  const orderedLessons = [...staticLessons].sort((left, right) =>
+    right.lessonDate.localeCompare(left.lessonDate),
+  );
+  const currentIndex = orderedLessons.findIndex((item) => item.id === lesson.id);
+  const previousLesson = currentIndex >= 0 ? orderedLessons[currentIndex + 1] : undefined;
+  const nextLesson = currentIndex > 0 ? orderedLessons[currentIndex - 1] : undefined;
 
-      <div className="mt-2 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 text-xs leading-6 text-[var(--muted)]">
-        此頁不連接 SQLite。收藏、完成與測驗紀錄保存在目前瀏覽器的 localStorage。
+  return (
+    <div className="reading-container static-reader">
+      <div className="reader-utility-bar">
+        <Link to="/knowledge" className="lesson-breadcrumb">
+          <ArrowLeft size={15} />
+          回到教材索引
+        </Link>
+        <span>收藏、進度與測驗只保存在目前裝置</span>
       </div>
 
-      <div className="lesson-layout mt-5">
+      <div className="lesson-layout editorial-lesson-layout">
         <article className="min-w-0">
-          <header className="lesson-header">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="meta-pill is-accent">{lesson.id}</span>
-              <span className="meta-pill">{lesson.category}</span>
-              {record.completed && <span className="meta-pill is-success">已完成</span>}
+          <header className="lesson-header editorial-lesson-header">
+            <div className="reader-kicker">
+              <span>{lesson.id}</span>
+              <span>{lesson.category}</span>
+              {record.completed && <span>已完成</span>}
             </div>
             <h1>{lesson.title}</h1>
             <p className="lesson-summary">{lesson.summary}</p>
-            <div className="lesson-meta">
-              <span className="meta-pill"><CalendarDays size={13} className="mr-1.5" />{formatDate(lesson.lessonDate)}</span>
-              <span className="meta-pill"><Clock3 size={13} className="mr-1.5" />{lesson.estimatedMinutes} 分鐘</span>
-              <span className="meta-pill"><BookOpen size={13} className="mr-1.5" />已閱讀 {record.readCount} 次</span>
+            <div className="reader-meta">
+              <span><CalendarDays size={14} />整理於 {formatDate(lesson.lessonDate)}</span>
+              <span><Clock3 size={14} />約 {lesson.estimatedMinutes} 分鐘</span>
+              <span><BookOpen size={14} />讀過 {record.readCount} 次</span>
               {record.quizTotal && (
-                <span className="meta-pill is-success">最近測驗 {record.quizScore} / {record.quizTotal}</span>
+                <span>最近測驗 {record.quizScore} / {record.quizTotal}</span>
               )}
             </div>
-            <div className="lesson-actions">
-              <StatusButton kind="completed" active={record.completed} busy={busy === "completed"} onToggle={() => toggle("completed")} />
-              <StatusButton kind="bookmarked" active={record.bookmarked} busy={busy === "bookmarked"} onToggle={() => toggle("bookmarked")} />
+            <div className="reader-action-row">
+              <div className="lesson-actions">
+                <StatusButton kind="completed" active={record.completed} busy={busy === "completed"} onToggle={() => toggle("completed")} />
+                <StatusButton kind="bookmarked" active={record.bookmarked} busy={busy === "bookmarked"} onToggle={() => toggle("bookmarked")} />
+              </div>
+              {record.lastReadAt && (
+                <p>上次閱讀 {formatDateTime(record.lastReadAt)}</p>
+              )}
             </div>
-            {record.lastReadAt && (
-              <p className="mt-3 text-[11px] text-[var(--muted)]">最近閱讀：{formatDateTime(record.lastReadAt)}</p>
-            )}
           </header>
 
-          <details className="mobile-toc mt-5">
-            <summary>本文目錄 · {toc.length} 個章節</summary>
+          <details className="mobile-toc">
+            <summary>本文目錄 <span>{toc.length} 個章節</span></summary>
             <nav aria-label="手機版文章目錄">{tocContent}</nav>
           </details>
 
@@ -445,32 +503,31 @@ export function StaticLessonPage() {
             <LessonDiagrams images={lesson.images} />
             <LessonMarkdown content={lesson.markdown} />
 
-            <section className="mt-10 border-t border-[var(--line)] pt-7">
-              <div className="flex items-center gap-2">
-                <Library size={18} className="text-[var(--accent-strong)]" />
-                <h2 className="text-xl font-extrabold tracking-[-0.025em]">相關知識節點</h2>
-              </div>
+            <section className="reader-section related-section">
+              <p className="reader-section-index">Related topics</p>
+              <h2>相關知識節點</h2>
               <div className="related-topics">
-                {lesson.relatedTopics.map((topic) => <span key={topic} className="meta-pill">{topic}</span>)}
+                {lesson.relatedTopics.map((topic) => <span key={topic}>{topic}</span>)}
               </div>
             </section>
 
-            <section className="mt-9">
-              <h2 className="text-xl font-extrabold tracking-[-0.025em]">參考資料</h2>
-              <div className="mt-4 grid gap-2">
+            <section className="reader-section reference-section">
+              <p className="reader-section-index">References</p>
+              <h2>參考資料</h2>
+              <div className="reference-list">
                 {lesson.references.map((reference) => (
                   <a
                     key={reference.url}
                     href={reference.url}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="flex min-h-[62px] items-center justify-between gap-4 rounded-2xl border border-[var(--line)] bg-[var(--surface)] px-4 py-3 transition-colors hover:border-[var(--line-strong)]"
+                    className="reference-row"
                   >
                     <span>
-                      <strong className="block text-sm font-semibold">{reference.title}</strong>
-                      <span className="mt-1 block text-[11px] text-[var(--muted)]">{reference.publisher}</span>
+                      <strong>{reference.title}</strong>
+                      <span>{reference.publisher}</span>
                     </span>
-                    <ExternalLink size={16} className="shrink-0 text-[var(--muted)]" />
+                    <ExternalLink size={15} />
                   </a>
                 ))}
               </div>
@@ -484,23 +541,38 @@ export function StaticLessonPage() {
               answerSource="local"
             />
 
-            <section className="mt-10 rounded-2xl border border-[color-mix(in_srgb,var(--success)_28%,var(--line))] bg-[var(--success-soft)] p-5">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="text-base font-extrabold">這篇讀完了嗎？</h2>
-                  <p className="mt-1 text-xs leading-6 text-[var(--muted)]">完成狀態會保存在此瀏覽器。</p>
-                </div>
-                <button type="button" className="primary-button" onClick={() => toggle("completed")}>
-                  <CheckCircle2 size={17} />
-                  {record.completed ? "取消完成" : "完成本課"}
-                </button>
+            <section className="reading-completion">
+              <div>
+                <p className="reader-section-index">End of note</p>
+                <h2>{record.completed ? "這篇已經標記完成。" : "讀到這裡，替這篇筆記做個記號。"}</h2>
+                <p>完成狀態只會保存在目前這個瀏覽器。</p>
               </div>
+              <button type="button" className="primary-button" onClick={() => toggle("completed")}>
+                <CheckCircle2 size={17} />
+                {record.completed ? "取消完成" : "標記完成"}
+              </button>
             </section>
+
+            <nav className="lesson-pagination" aria-label="前後篇教材">
+              {previousLesson ? (
+                <Link to={`/lessons/${previousLesson.id}`} className="lesson-pagination-link">
+                  <span>上一篇 · {previousLesson.id}</span>
+                  <strong>{previousLesson.title}</strong>
+                </Link>
+              ) : <span />}
+              {nextLesson ? (
+                <Link to={`/lessons/${nextLesson.id}`} className="lesson-pagination-link is-next">
+                  <span>下一篇 · {nextLesson.id}</span>
+                  <strong>{nextLesson.title}</strong>
+                </Link>
+              ) : <span />}
+            </nav>
           </div>
         </article>
 
-        <aside className="toc-card surface-card" aria-label="文章目錄">
-          <h2>On this page</h2>
+        <aside className="toc-card static-toc" aria-label="文章目錄">
+          <p>本文目錄</p>
+          <h2>{lesson.id}</h2>
           <nav>{tocContent}</nav>
         </aside>
       </div>
@@ -515,82 +587,98 @@ export function StaticProgressPage() {
   const wrongCount = data.records.reduce((sum, entry) => sum + entry.wrongAnswers.length, 0);
 
   return (
-    <div className="page-container" data-revision={revision}>
-      <header>
-        <p className="page-kicker">Browser Learning Record</p>
+    <div className="page-container progress-page" data-revision={revision}>
+      <header className="standard-page-header">
+        <p className="page-kicker">Local learning record</p>
         <h1 className="page-title">學習紀錄</h1>
         <p className="page-description">
-          這些資料目前在這個瀏覽器內；之後才會加入跨裝置雲端同步。
+          整理目前裝置上的閱讀、收藏與測驗狀態。這些資料尚未跨裝置同步。
         </p>
       </header>
 
-      <section className="progress-grid" aria-label="學習進度統計">
-        <article className="stat-card"><span className="stat-icon"><Flame size={18} /></span><div className="stat-value">{data.streak}</div><p className="stat-label">連續學習天數</p></article>
-        <article className="stat-card"><span className="stat-icon"><BookCheck size={18} /></span><div className="stat-value">{data.completedCount}<span className="text-sm font-medium text-[var(--muted)]"> / {data.totalLessons}</span></div><p className="stat-label">完成課程</p></article>
-        <article className="stat-card"><span className="stat-icon"><BarChart3 size={18} /></span><div className="stat-value">{readCount}</div><p className="stat-label">曾閱讀教材</p></article>
-        <article className="stat-card"><span className="stat-icon"><BrainCircuit size={18} /></span><div className="stat-value">{data.averageQuizPercent === null ? "—" : `${data.averageQuizPercent}%`}</div><p className="stat-label">最近測驗平均</p></article>
+      <section className="learning-summary" aria-label="學習進度統計">
+        <div><span>連續學習</span><strong>{data.streak}<small>天</small></strong></div>
+        <div><span>完成教材</span><strong>{data.completedCount}<small>／{data.totalLessons}</small></strong></div>
+        <div><span>曾閱讀</span><strong>{readCount}<small>篇</small></strong></div>
+        <div><span>測驗平均</span><strong>{data.averageQuizPercent === null ? "—" : `${data.averageQuizPercent}%`}</strong></div>
       </section>
 
-      <div className="mt-9 grid gap-8 lg:grid-cols-[1.35fr_0.85fr]">
+      <div className="progress-content-layout">
         <section aria-labelledby="progress-lessons-title">
-          <div className="section-heading-row">
-            <h2 id="progress-lessons-title" className="section-heading">教材進度</h2>
-            <span className="text-[11px] text-[var(--muted)]">{wrongCount} 個最近錯題</span>
+          <div className="editorial-section-heading is-compact">
+            <div>
+              <p className="section-index">Lessons</p>
+              <h2 id="progress-lessons-title">教材進度</h2>
+            </div>
+            <span className="section-counter">{wrongCount} 個待複習錯題</span>
           </div>
-          <div className="progress-list">
+          <div className="record-list">
             {data.records.map(({ lesson, lastReadAt, wrongAnswers }) => (
-              <article key={lesson.id} className="progress-row">
-                <div className="progress-row-main">
-                  <div className="progress-row-title">
-                    <div className="mb-2 flex flex-wrap gap-1.5">
-                      <span className="meta-pill is-accent">{lesson.id}</span>
-                      <span className="meta-pill">{lesson.category}</span>
-                      {lesson.record.completed && <span className="meta-pill is-success">已完成</span>}
-                      {lesson.record.bookmarked && <span className="meta-pill">已收藏</span>}
-                    </div>
-                    <h3>{lesson.title}</h3>
-                    <p>
-                      最近閱讀 {formatDateTime(lastReadAt)}
-                      {lesson.record.quizTotal ? ` · 測驗 ${lesson.record.quizScore} / ${lesson.record.quizTotal}` : " · 尚未作答"}
-                    </p>
-                  </div>
-                  <Link to={`/lessons/${lesson.id}`} className="touch-target inline-flex shrink-0 items-center justify-center rounded-xl text-[var(--accent-strong)]" aria-label={`繼續閱讀 ${lesson.title}`}>
-                    <ArrowUpRight size={18} />
+              <article key={lesson.id} className="record-row">
+                <div className="record-row-main">
+                  <Link to={`/lessons/${lesson.id}`} className="record-row-title">
+                    <span className="record-row-id">{lesson.id}</span>
+                    <span>
+                      <small>{lesson.category}</small>
+                      <strong>{lesson.title}</strong>
+                    </span>
                   </Link>
+                  <div className="record-row-status">
+                    {lesson.record.completed && <span className="is-complete">已完成</span>}
+                    {lesson.record.bookmarked && <span>已收藏</span>}
+                    {lesson.record.quizTotal ? <span>測驗 {lesson.record.quizScore} / {lesson.record.quizTotal}</span> : <span>尚未測驗</span>}
+                  </div>
+                  <div className="record-row-tail">
+                    <span>最近閱讀</span>
+                    <time>{formatDateTime(lastReadAt)}</time>
+                    <Link to={`/lessons/${lesson.id}`} className="record-open-link" aria-label={`繼續閱讀 ${lesson.title}`}>
+                      繼續閱讀
+                      <ArrowUpRight size={15} />
+                    </Link>
+                  </div>
                 </div>
                 {wrongAnswers.length > 0 && (
-                  <div className="wrong-answer-list">
-                    {wrongAnswers.map((wrong) => (
-                      <div key={wrong.questionId} className="wrong-answer">
-                        {wrong.questionId} · 選擇選項 {wrong.selectedOption + 1}
-                      </div>
-                    ))}
-                  </div>
+                  <details className="record-wrong-answers">
+                    <summary>查看最近錯題</summary>
+                    <div className="wrong-answer-list">
+                      {wrongAnswers.map((wrong) => (
+                        <div key={wrong.questionId} className="wrong-answer">
+                          {wrong.questionId} · 選擇選項 {wrong.selectedOption + 1}
+                        </div>
+                      ))}
+                    </div>
+                  </details>
                 )}
               </article>
             ))}
           </div>
         </section>
 
-        <section className="surface-card p-5" aria-labelledby="attempts-title">
-          <div className="section-heading-row">
-            <h2 id="attempts-title" className="section-heading">測驗嘗試</h2>
+        <section className="attempts-panel" aria-labelledby="attempts-title">
+          <div className="editorial-section-heading is-compact">
+            <div>
+              <p className="section-index">Quiz attempts</p>
+              <h2 id="attempts-title">測驗紀錄</h2>
+            </div>
+            <BrainCircuit size={18} />
           </div>
           {data.attempts.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-[var(--line-strong)] p-5 text-center">
-              <BrainCircuit className="mx-auto text-[var(--muted)]" size={23} />
-              <p className="mt-3 text-sm font-semibold">還沒有測驗紀錄</p>
+            <div className="attempt-empty">
+              <p>還沒有測驗紀錄。</p>
+              <span>完成教材後，可以順便回答課後題目。</span>
             </div>
           ) : (
-            data.attempts.map((attempt) => (
-              <div key={attempt.id} className="attempt-row">
-                <Link to={`/lessons/${attempt.lessonId}`} className="min-w-0 flex-1 font-semibold hover:text-[var(--accent-strong)]">
-                  <span className="block truncate">{attempt.lessonTitle}</span>
-                  <span className="mt-1 block text-[10px] font-normal text-[var(--muted)]">{formatDateTime(attempt.attemptedAt)}</span>
+            <div className="attempt-list">
+              {data.attempts.map((attempt) => (
+                <Link key={attempt.id} to={`/lessons/${attempt.lessonId}`} className="attempt-row">
+                  <span>
+                    <strong>{attempt.lessonTitle}</strong>
+                    <small>{formatDateTime(attempt.attemptedAt)}</small>
+                  </span>
+                  <span className="attempt-score">{attempt.score} / {attempt.total}</span>
                 </Link>
-                <span className="meta-pill is-accent">{attempt.score} / {attempt.total}</span>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </section>
       </div>
@@ -630,74 +718,120 @@ export function StaticSettingsPage() {
   }
 
   return (
-    <div className="page-container">
-      <header>
-        <p className="page-kicker">網站設定</p>
+    <div className="page-container settings-page">
+      <header className="standard-page-header">
+        <p className="page-kicker">Preferences & data</p>
         <h1 className="page-title">設定</h1>
-        <p className="page-description">教材唯讀；個人學習資料只存在這個瀏覽器。</p>
+        <p className="page-description">
+          調整閱讀外觀、查看教材來源，或管理目前瀏覽器中的個人學習資料。
+        </p>
       </header>
 
-      <div className="settings-grid">
-        <section className="settings-card surface-card">
-          <div className="flex items-center gap-2">
-            <Monitor size={18} className="text-[var(--accent-strong)]" />
-            <h2>顯示主題</h2>
+      <div className="settings-sections">
+        <section className="settings-group" aria-labelledby="appearance-settings">
+          <header>
+            <span>01</span>
+            <div>
+              <h2 id="appearance-settings">外觀</h2>
+              <p>選擇閱讀時使用的色彩模式。</p>
+            </div>
+          </header>
+          <div className="settings-group-body">
+            <div className="setting-row">
+              <div className="setting-copy">
+                <h3>顯示模式</h3>
+                <p>跟隨系統會依作業系統目前的深淺色設定切換。</p>
+              </div>
+              <div className="theme-options">
+                {[
+                  { value: "light" as const, label: "淺色", icon: Sun },
+                  { value: "dark" as const, label: "深色", icon: Moon },
+                  { value: "system" as const, label: "跟隨系統", icon: Monitor },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button key={item.value} type="button" className={cn("theme-option", mode === item.value && "is-active")} onClick={() => setMode(item.value)}>
+                      <Icon size={17} />
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-          <div className="theme-options">
-            {[
-              { value: "light" as const, label: "淺色", icon: Sun },
-              { value: "dark" as const, label: "深色", icon: Moon },
-              { value: "system" as const, label: "跟隨系統", icon: Monitor },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <button key={item.value} type="button" className={cn("theme-option", mode === item.value && "is-active")} onClick={() => setMode(item.value)}>
-                  <Icon size={18} />
-                  {item.label}
+        </section>
+
+        <section className="settings-group" aria-labelledby="source-settings">
+          <header>
+            <span>02</span>
+            <div>
+              <h2 id="source-settings">教材來源</h2>
+              <p>網站只負責呈現 GitHub 中的 Markdown 教材。</p>
+            </div>
+          </header>
+          <div className="settings-group-body">
+            <div className="setting-row">
+              <div className="setting-copy">
+                <h3>GitHub · main</h3>
+                <p>教材由我整理後放入 Repository，不是每日自動生成的文章。</p>
+              </div>
+              <a href={repositoryUrl} target="_blank" rel="noreferrer noopener" className="secondary-button">
+                <ExternalLink size={16} />
+                查看 Repository
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-group" aria-labelledby="data-settings">
+          <header>
+            <span>03</span>
+            <div>
+              <h2 id="data-settings">本機資料</h2>
+              <p>備份或帶入目前的學習紀錄。</p>
+            </div>
+          </header>
+          <div className="settings-group-body">
+            <div className="setting-row is-stacked">
+              <div className="setting-copy">
+                <h3>學習與測驗資料</h3>
+                <p>
+                  目前有 {snapshot.records.filter((record) => record.lastReadAt || record.completed || record.bookmarked).length} 筆學習紀錄與 {snapshot.attempts.length} 筆測驗紀錄。
+                  匯入功能只會處理 JSON 備份，不會連線到正式資料庫。
+                </p>
+              </div>
+              <div className="setting-actions">
+                <button type="button" className="secondary-button" onClick={downloadCurrentData}>
+                  <Download size={16} />
+                  匯出 JSON
                 </button>
-              );
-            })}
+                <button type="button" className="secondary-button" onClick={() => fileInput.current?.click()}>
+                  <Upload size={16} />
+                  匯入舊備份
+                </button>
+                <input ref={fileInput} type="file" accept="application/json,.json" className="hidden" onChange={(event) => void importFile(event)} />
+              </div>
+              {message && <p className="settings-message">{message}</p>}
+            </div>
           </div>
         </section>
 
-        <section className="settings-card surface-card">
-          <div className="flex items-center gap-2">
-            <Library size={18} className="text-[var(--accent-strong)]" />
-            <h2>教材來源</h2>
+        <section className="settings-group" aria-labelledby="site-settings">
+          <header>
+            <span>04</span>
+            <div>
+              <h2 id="site-settings">網站資訊</h2>
+              <p>目前公開內容與建置狀態。</p>
+            </div>
+          </header>
+          <div className="settings-group-body">
+            <dl className="site-facts">
+              <div><dt>公開教材</dt><dd>{staticLessons.length} 篇</dd></div>
+              <div><dt>教材來源</dt><dd>GitHub main</dd></div>
+              <div><dt>網站形式</dt><dd>Static · GitHub Pages</dd></div>
+              <div><dt>Draft</dt><dd>不納入公開建置、搜尋與路由</dd></div>
+            </dl>
           </div>
-          <p>這些教材由我整理後放進 GitHub <strong>main</strong> 分支，不是自動生成的每日文章。</p>
-          <a href={repositoryUrl} target="_blank" rel="noreferrer noopener" className="secondary-button mt-4">
-            <ExternalLink size={16} />
-            開啟 Repository
-          </a>
-        </section>
-
-        <section className="settings-card surface-card">
-          <div className="flex items-center gap-2">
-            <HardDrive size={18} className="text-[var(--accent-strong)]" />
-            <h2>本機學習資料</h2>
-          </div>
-          <p>目前有 {snapshot.records.filter((record) => record.lastReadAt || record.completed || record.bookmarked).length} 筆學習紀錄與 {snapshot.attempts.length} 筆測驗紀錄。</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button type="button" className="secondary-button" onClick={downloadCurrentData}>
-              <Download size={16} />
-              匯出 JSON
-            </button>
-            <button type="button" className="secondary-button" onClick={() => fileInput.current?.click()}>
-              <Upload size={16} />
-              匯入舊 SQLite 備份
-            </button>
-            <input ref={fileInput} type="file" accept="application/json,.json" className="hidden" onChange={(event) => void importFile(event)} />
-          </div>
-          {message && <p className="mt-4 rounded-xl bg-[var(--surface-soft)] px-3 py-2 text-xs leading-6">{message}</p>}
-        </section>
-
-        <section className="settings-card surface-card">
-          <div className="flex items-center gap-2">
-            <BookCheck size={18} className="text-[var(--accent-strong)]" />
-            <h2>資料範圍</h2>
-          </div>
-          <p>目前包含 {staticLessons.length} 篇已發布教材。Draft 不會被納入公開建置，也不會出現在搜尋或路由中。</p>
         </section>
       </div>
     </div>

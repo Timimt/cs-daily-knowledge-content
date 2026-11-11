@@ -8,10 +8,32 @@ const options = [
   { mode: "system" as const, label: "跟隨系統", icon: Monitor },
 ];
 
-export function ThemeToggle({ expanded = false }: { expanded?: boolean }) {
+export function ThemeToggle({
+  expanded = false,
+  cycleOnly = false,
+}: {
+  expanded?: boolean;
+  cycleOnly?: boolean;
+}) {
   const { mode, setMode } = useTheme();
   const active = options.find((option) => option.mode === mode) ?? options[2];
   const Icon = active.icon;
+
+  if (cycleOnly) {
+    return (
+      <button
+        type="button"
+        className="theme-cycle-single"
+        title={`目前為${active.label}；點擊切換`}
+        aria-label={`目前為${active.label}，點擊切換主題`}
+        onClick={() =>
+          setMode(mode === "light" ? "dark" : mode === "dark" ? "system" : "light")
+        }
+      >
+        <Icon size={17} />
+      </button>
+    );
+  }
 
   if (!expanded) {
     return (

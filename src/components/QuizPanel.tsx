@@ -68,11 +68,11 @@ export function QuizPanel({
     <section className="quiz-section" aria-labelledby="quiz-title">
       <div className="quiz-intro">
         <div>
-          <h2 id="quiz-title">今日小測驗</h2>
+          <h2 id="quiz-title">讀後測驗</h2>
           <p>
             共 {questions.length} 題。
             {answerSource === "local"
-              ? "提交後會在此瀏覽器顯示答案、解析與保存結果。"
+              ? "作答後會在這裡顯示答案與解析，結果只留在目前裝置。"
               : "提交後才會從伺服器取得答案與解析。"}
           </p>
         </div>

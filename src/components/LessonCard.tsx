@@ -1,5 +1,6 @@
 import { ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { cn } from "../lib/format";
 import type { LessonSummary } from "../shared/types";
 import { formatDate } from "../lib/format";
 import { StatusButton } from "./StatusButton";
@@ -8,41 +9,47 @@ type LessonCardProps = {
   lesson: LessonSummary;
   onUpdate?: (kind: "completed" | "bookmarked", value: boolean) => void;
   busyKind?: "completed" | "bookmarked" | null;
+  variant?: "default" | "editorial";
 };
 
-export function LessonCard({ lesson, onUpdate, busyKind = null }: LessonCardProps) {
+export function LessonCard({
+  lesson,
+  onUpdate,
+  busyKind = null,
+  variant = "default",
+}: LessonCardProps) {
   return (
-    <article className="lesson-card">
-      <div className="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-        <span className="meta-pill is-accent">{lesson.id}</span>
-        <span className="meta-pill">{lesson.category}</span>
-        {lesson.record.completed && <span className="meta-pill is-success">已完成</span>}
+    <article className={cn("lesson-card", variant === "editorial" && "is-editorial")}>
+      <div className="lesson-card-eyebrow">
+        <span className="lesson-card-code">{lesson.id}</span>
+        <span>{lesson.category}</span>
+        {lesson.record.completed && <span className="lesson-card-state">已完成</span>}
       </div>
-      <Link to={`/lessons/${lesson.id}`} className="group block">
+      <Link to={`/lessons/${lesson.id}`} className="lesson-card-link">
         <h2 className="lesson-card-title">
-          {lesson.title}
+          <span>{lesson.title}</span>
           <ArrowUpRight
             size={17}
-            className="mt-1 shrink-0 text-[var(--muted)] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            className="lesson-card-arrow"
           />
         </h2>
-        <p className="mt-3 line-clamp-3 text-sm leading-7 text-[var(--muted)]">
+        <p className="lesson-card-snippet">
           {lesson.snippet}
         </p>
       </Link>
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
-        <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--muted)]">
-          <span className="inline-flex items-center gap-1.5">
+      <div className="lesson-card-footer">
+        <div className="lesson-card-meta">
+          <span>
             <BookOpen size={14} />
             {formatDate(lesson.date)}
           </span>
-          <span className="inline-flex items-center gap-1.5">
+          <span>
             <Clock3 size={14} />
             {lesson.estimatedMinutes} 分鐘
           </span>
         </div>
         {onUpdate && (
-          <div className="flex items-center gap-2">
+          <div className="lesson-card-actions">
             <StatusButton
               kind="bookmarked"
               active={lesson.record.bookmarked}
