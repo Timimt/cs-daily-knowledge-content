@@ -36,7 +36,7 @@ import { LessonMarkdown } from "../components/LessonMarkdown";
 import { QuizPanel } from "../components/QuizPanel";
 import { StatusButton } from "../components/StatusButton";
 import { cn } from "../lib/format";
-import { dayLabel, formatDate, formatDateTime } from "../lib/format";
+import { formatDate, formatDateTime } from "../lib/format";
 import {
   defaultLocalRecord,
   exportLocalLearning,
@@ -107,14 +107,14 @@ export function StaticDashboardPage() {
   return (
     <div className="page-container">
       <header className="mb-5">
-        <p className="page-kicker">GitHub-driven CS Knowledge Base</p>
-        <h1 className="page-title">每天讀一篇，慢慢累積真正有用的資工知識。</h1>
+        <p className="page-kicker">宇奕整理的資工與資安教材</p>
+        <h1 className="page-title">把讀過的東西整理成自己的教材。</h1>
       </header>
 
       <section className="dashboard-hero" aria-labelledby="today-lesson-title">
         <div className="hero-content">
           <div className="hero-kicker">
-            <span>{dayLabel(today.day)}</span>
+            <span>{today.id}</span>
             <span aria-hidden="true">·</span>
             <span>{today.category}</span>
           </div>
@@ -122,7 +122,7 @@ export function StaticDashboardPage() {
           <p className="hero-summary">{today.summary}</p>
           <div className="hero-actions">
             <Link to={`/lessons/${today.id}`} className="hero-primary">
-              開始今日課程
+              閱讀這篇教材
               <ArrowRight size={17} />
             </Link>
             <Link to="/knowledge" className="hero-secondary">
@@ -187,7 +187,7 @@ export function StaticDashboardPage() {
             <div className="recent-list">
               {recent.map(({ lesson, record }) => (
                 <Link key={lesson.id} to={`/lessons/${lesson.id}`} className="recent-row">
-                  <span className="recent-day">D{String(lesson.day).padStart(3, "0")}</span>
+                  <span className="recent-day">{lesson.id}</span>
                   <div className="min-w-0">
                     <h3>{lesson.title}</h3>
                     <p>{formatDateTime(record.lastReadAt)} · {record.completed ? "已完成" : "閱讀中"}</p>
@@ -258,10 +258,10 @@ export function StaticKnowledgePage() {
   return (
     <div className="page-container">
       <header>
-        <p className="page-kicker">Read-only GitHub Content</p>
-        <h1 className="page-title">歷史知識庫</h1>
+        <p className="page-kicker">自己整理的教材</p>
+        <h1 className="page-title">資工與資安筆記</h1>
         <p className="page-description">
-          教材直接來自 GitHub Repository。搜尋、收藏與完成狀態全部在瀏覽器執行。
+          這些教材由我自己整理，Markdown 放在 GitHub。搜尋、收藏與完成狀態都在瀏覽器執行。
         </p>
       </header>
 
@@ -413,7 +413,7 @@ export function StaticLessonPage() {
         <article className="min-w-0">
           <header className="lesson-header">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="meta-pill is-accent">{dayLabel(lesson.day)}</span>
+              <span className="meta-pill is-accent">{lesson.id}</span>
               <span className="meta-pill">{lesson.category}</span>
               {record.completed && <span className="meta-pill is-success">已完成</span>}
             </div>
@@ -487,7 +487,7 @@ export function StaticLessonPage() {
             <section className="mt-10 rounded-2xl border border-[color-mix(in_srgb,var(--success)_28%,var(--line))] bg-[var(--success-soft)] p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-base font-extrabold">今天的內容讀完了嗎？</h2>
+                  <h2 className="text-base font-extrabold">這篇讀完了嗎？</h2>
                   <p className="mt-1 text-xs leading-6 text-[var(--muted)]">完成狀態會保存在此瀏覽器。</p>
                 </div>
                 <button type="button" className="primary-button" onClick={() => toggle("completed")}>
@@ -543,7 +543,7 @@ export function StaticProgressPage() {
                 <div className="progress-row-main">
                   <div className="progress-row-title">
                     <div className="mb-2 flex flex-wrap gap-1.5">
-                      <span className="meta-pill is-accent">{dayLabel(lesson.day)}</span>
+                      <span className="meta-pill is-accent">{lesson.id}</span>
                       <span className="meta-pill">{lesson.category}</span>
                       {lesson.record.completed && <span className="meta-pill is-success">已完成</span>}
                       {lesson.record.bookmarked && <span className="meta-pill">已收藏</span>}
@@ -610,7 +610,7 @@ export function StaticSettingsPage() {
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `cs-daily-learning-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.download = `cs-notes-learning-${new Date().toISOString().slice(0, 10)}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
   }
@@ -632,7 +632,7 @@ export function StaticSettingsPage() {
   return (
     <div className="page-container">
       <header>
-        <p className="page-kicker">Static Site Settings</p>
+        <p className="page-kicker">網站設定</p>
         <h1 className="page-title">設定</h1>
         <p className="page-description">教材唯讀；個人學習資料只存在這個瀏覽器。</p>
       </header>
@@ -663,9 +663,9 @@ export function StaticSettingsPage() {
         <section className="settings-card surface-card">
           <div className="flex items-center gap-2">
             <Library size={18} className="text-[var(--accent-strong)]" />
-            <h2>GitHub 教材來源</h2>
+            <h2>教材來源</h2>
           </div>
-          <p>公開網站由 <strong>main</strong> 分支建置，教材 Markdown 與 metadata 是同一個 Repository 的權威來源。</p>
+          <p>這些教材由我整理後放進 GitHub <strong>main</strong> 分支，不是自動生成的每日文章。</p>
           <a href={repositoryUrl} target="_blank" rel="noreferrer noopener" className="secondary-button mt-4">
             <ExternalLink size={16} />
             開啟 Repository

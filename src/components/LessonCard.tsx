@@ -1,7 +1,7 @@
 import { ArrowUpRight, BookOpen, Clock3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { LessonSummary } from "../shared/types";
-import { dayLabel, formatDate } from "../lib/format";
+import { formatDate } from "../lib/format";
 import { StatusButton } from "./StatusButton";
 
 type LessonCardProps = {
@@ -14,7 +14,7 @@ export function LessonCard({ lesson, onUpdate, busyKind = null }: LessonCardProp
   return (
     <article className="lesson-card">
       <div className="mb-4 flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-        <span className="meta-pill is-accent">{dayLabel(lesson.day)}</span>
+        <span className="meta-pill is-accent">{lesson.id}</span>
         <span className="meta-pill">{lesson.category}</span>
         {lesson.record.completed && <span className="meta-pill is-success">已完成</span>}
       </div>

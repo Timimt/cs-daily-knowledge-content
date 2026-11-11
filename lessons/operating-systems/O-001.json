@@ -1,5 +1,5 @@
 {
-  "id": "day-002",
+  "id": "O-001",
   "day": 2,
   "status": "published",
   "title": "Windows Process 與 Windows API",
@@ -9,7 +9,7 @@
   "estimatedMinutes": 10,
   "images": [
     {
-      "id": "day-002-process-boundary",
+      "id": "O-001-process-boundary",
       "type": "inline-svg",
       "variant": "windows-process-boundary",
       "alt": "應用程式從使用者模式透過 Windows API 進入核心模式，再取得 Process Handle 與權限。",
@@ -50,7 +50,7 @@
   ],
   "quiz": [
     {
-      "id": "day-002-q1",
+      "id": "O-001-Q1",
       "prompt": "在 Windows 中，哪一項通常提供較強的記憶體隔離？",
       "options": [
         "同一個 Process 內的兩個 Thread",
@@ -62,7 +62,7 @@
       "explanation": "不同 Process 通常有各自隔離的虛擬位址空間。同一 Process 內的多個 Thread 通常共享位址空間，因此隔離程度不同。"
     },
     {
-      "id": "day-002-q2",
+      "id": "O-001-Q2",
       "prompt": "為什麼不能把 Windows API 想成完全等同於普通函式庫呼叫？",
       "options": [
         "因為 Windows API 只能處理圖片",
@@ -74,7 +74,7 @@
       "explanation": "許多 Win32 API 背後會進入核心模式。作業系統核心是特權邊界，會檢查呼叫者權限，不會因為呼叫 API 就自動授予管理員權限。"
     },
     {
-      "id": "day-002-q3",
+      "id": "O-001-Q3",
       "prompt": "取得某個 Process 的識別碼（PID）後，是否能保證可以任意操作該 Process？",
       "options": [
         "可以，PID 就是完整的通行證",

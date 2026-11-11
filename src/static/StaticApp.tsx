@@ -4,12 +4,10 @@ import {
   Home,
   Library,
   Settings,
-  Sparkles,
 } from "lucide-react";
 import { useEffect } from "react";
 import { LogoMark } from "../components/LogoMark";
 import { ThemeToggle } from "../components/ThemeToggle";
-import { AiDemoPage } from "../pages/AiDemoPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { cn } from "../lib/format";
 import {
@@ -22,8 +20,7 @@ import {
 
 const navigation = [
   { to: "/", label: "首頁", icon: Home, end: true },
-  { to: "/knowledge", label: "知識庫", icon: Library },
-  { to: "/ai", label: "AI 搜尋", icon: Sparkles },
+  { to: "/knowledge", label: "教材", icon: Library },
   { to: "/progress", label: "學習紀錄", icon: BarChart3 },
   { to: "/settings", label: "設定", icon: Settings },
 ];
@@ -64,7 +61,7 @@ function StaticShell() {
             GitHub Pages · Static
           </div>
           <p className="mt-2 text-xs leading-5 text-[var(--muted)]">
-            教材來自 GitHub；收藏、進度與測驗紀錄只保存在目前的瀏覽器。
+            教材由宇奕整理後放進 GitHub；收藏、進度與測驗只保存在目前的瀏覽器。
           </p>
         </div>
       </aside>
@@ -106,7 +103,6 @@ export function StaticApp() {
           <Route index element={<StaticDashboardPage />} />
           <Route path="knowledge" element={<StaticKnowledgePage />} />
           <Route path="lessons/:id" element={<StaticLessonPage />} />
-          <Route path="ai" element={<AiDemoPage />} />
           <Route path="progress" element={<StaticProgressPage />} />
           <Route path="settings" element={<StaticSettingsPage />} />
           <Route path="*" element={<NotFoundPage />} />

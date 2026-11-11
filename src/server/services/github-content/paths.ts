@@ -30,9 +30,9 @@ const categoryAliases: Record<string, GitHubLessonCategory> = {
   "ai、雲端運算與新興技術": "ai-cloud",
 };
 
-const lessonIdPattern = /^[a-z0-9][a-z0-9-]{1,63}$/;
+const lessonIdPattern = /^[A-Za-z0-9][A-Za-z0-9-]{1,63}$/;
 const contentPathPattern =
-  /^lessons\/([a-z0-9-]+)\/([a-z0-9][a-z0-9-]{1,63})\.md$/;
+  /^lessons\/([a-z0-9-]+)\/([A-Za-z0-9][A-Za-z0-9-]{1,63})\.md$/;
 const commitShaPattern = /^[a-f0-9]{7,64}$/i;
 
 export function normalizeCategory(

@@ -9,10 +9,10 @@ export function LogoMark({ compact = false }: { compact?: boolean }) {
       {!compact && (
         <span className="min-w-0">
           <strong className="block text-[15px] tracking-[-0.02em] text-[var(--text)]">
-            CS Daily
+            CS Notes
           </strong>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted)]">
-            Knowledge
+          <span className="block text-[10px] font-semibold tracking-[0.08em] text-[var(--muted)]">
+            宇奕整理的教材
           </span>
         </span>
       )}

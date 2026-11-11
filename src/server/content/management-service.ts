@@ -147,7 +147,7 @@ type SyncJobRow = {
   updated_at: string;
 };
 
-const lessonIdPattern = /^[a-z0-9][a-z0-9-]{1,63}$/;
+const lessonIdPattern = /^[A-Za-z0-9][A-Za-z0-9-]{1,63}$/;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_MARKDOWN_BYTES = 512 * 1024;
 

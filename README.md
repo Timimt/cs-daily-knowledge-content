@@ -1,10 +1,12 @@
-# CS Daily Knowledge
+# CS Notes
 
-個人化的計算機概論與資訊安全學習平台。公開網站由 GitHub Pages 託管，教材 Markdown 與 metadata 以 GitHub `main` 為唯一權威來源；收藏、完成、閱讀與測驗紀錄只保存在瀏覽器 `localStorage`。
+宇奕整理的資工與資安教材。公開網站由 GitHub Pages 託管，教材 Markdown 與 metadata 以 GitHub `main` 為唯一權威來源；收藏、完成、閱讀與測驗紀錄只保存在瀏覽器 `localStorage`。
+
+目前只保留最初整理的三篇教材，不再每日自動生成文章。
 
 原本的 Express + SQLite 管理與同步功能仍保留，作為本機管理、舊資料保存與後續雲端同步的基礎，但 GitHub Pages 公開網站不依賴後端或資料庫。
 
-AI 搜尋頁只提供清楚標示的介面示範，尚未連接 DeepSeek，也不會傳送問題到外部服務。
+公開靜態網站不使用 AI 生成教材，也不包含自動排程產文。
 
 ## 技術
 
@@ -295,10 +297,10 @@ pnpm test:github-content
 
 ## 目前限制
 
-- 沒有 DeepSeek、RAG、Telegram 或每日 AI 生成；目前 AI 頁面仍是純前端示範。
+- 沒有 DeepSeek、RAG、Telegram 或每日 AI 生成。
 - 只有單人帳號，沒有多使用者或 RBAC。
 - GitHub 真實建立、更新、歷史與 SHA 驗證已完成；公開 Pages 不呼叫 GitHub 寫入 API。
 - 教材管理尚未提供圖片上傳與測驗題目編輯。
-- GitHub Pages 使用瀏覽器內關鍵字搜尋，尚未加入向量語意搜尋。
+- GitHub Pages 使用瀏覽器內關鍵字搜尋，教材由宇奕手動整理與更新。
 - Pages 的收藏、進度與測驗紀錄保存在 localStorage；SQLite 是本機管理模式與遷移來源。
 - GitHub remote commit 歷史需在同步啟用且使用者主動操作時才會查詢。

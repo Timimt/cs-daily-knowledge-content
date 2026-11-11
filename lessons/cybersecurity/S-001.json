@@ -1,5 +1,5 @@
 {
-  "id": "day-001",
+  "id": "S-001",
   "day": 1,
   "status": "published",
   "title": "AES 與 RSA 的差異",
@@ -9,7 +9,7 @@
   "estimatedMinutes": 9,
   "images": [
     {
-      "id": "day-001-aes-rsa",
+      "id": "S-001-aes-rsa",
       "type": "inline-svg",
       "variant": "symmetric-vs-asymmetric",
       "alt": "AES 使用雙方共用的秘密金鑰；RSA 使用成對的公鑰與私鑰。",
@@ -49,7 +49,7 @@
   ],
   "quiz": [
     {
-      "id": "day-001-q1",
+      "id": "S-001-Q1",
       "prompt": "下列哪一項最能描述 AES 的金鑰關係？",
       "options": [
         "傳送端使用公鑰，接收端使用私鑰",
@@ -61,7 +61,7 @@
       "explanation": "AES 是對稱式加密。傳送端與接收端必須取得相同的秘密金鑰，並透過安全方式管理與更新它。"
     },
     {
-      "id": "day-001-q2",
+      "id": "S-001-Q2",
       "prompt": "混合式加密中，RSA 最常扮演哪個角色？",
       "options": [
         "直接加密所有大型影片檔",
@@ -73,7 +73,7 @@
       "explanation": "RSA 運算成本較高，較適合處理少量金鑰資料或用於簽章。大量內容通常交給 AES，再用 RSA 等機制保護 AES 金鑰。"
     },
     {
-      "id": "day-001-q3",
+      "id": "S-001-Q3",
       "prompt": "為什麼 TLS 類協定通常不會只用 RSA 直接加密整個網頁連線內容？",
       "options": [
         "因為 RSA 不能處理任何數字",

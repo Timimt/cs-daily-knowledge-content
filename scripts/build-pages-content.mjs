@@ -51,7 +51,7 @@ function objectArray(value, field, filename) {
 function validateMetadata(metadata, filename, categoryDirectory) {
   const label = path.relative(projectRoot, filename);
   if (!metadata || typeof metadata !== "object") fail(`${label}: metadata must be an object.`);
-  if (typeof metadata.id !== "string" || !/^[a-z0-9][a-z0-9-]{1,63}$/.test(metadata.id)) {
+  if (typeof metadata.id !== "string" || !/^[A-Za-z0-9][A-Za-z0-9-]{1,63}$/.test(metadata.id)) {
     fail(`${label}: id is invalid.`);
   }
   if (!Number.isInteger(metadata.day) || metadata.day < 1) fail(`${label}: day is invalid.`);

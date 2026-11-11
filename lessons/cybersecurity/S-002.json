@@ -1,5 +1,5 @@
 {
-  "id": "day-003",
+  "id": "S-002",
   "day": 3,
   "status": "published",
   "title": "勒索病毒的混合式加密流程",
@@ -9,7 +9,7 @@
   "estimatedMinutes": 8,
   "images": [
     {
-      "id": "day-003-ransomware-flow",
+      "id": "S-002-ransomware-flow",
       "type": "inline-svg",
       "variant": "ransomware-hybrid-flow",
       "alt": "勒索病毒以 AES 加密檔案，再用攻擊者 RSA 公鑰包裝 AES 工作金鑰。",
@@ -50,7 +50,7 @@
   ],
   "quiz": [
     {
-      "id": "day-003-q1",
+      "id": "S-002-Q1",
       "prompt": "勒索病毒採用混合式加密時，最常見的分工是什麼？",
       "options": [
         "AES 產生作業系統權限，RSA 建立檔案",
@@ -62,7 +62,7 @@
       "explanation": "大量檔案適合用 AES 處理；RSA 可用來保護 AES 工作金鑰。實際惡意程式可能批次處理或使用不同金鑰策略，但核心是分層保護。"
     },
     {
-      "id": "day-003-q2",
+      "id": "S-002-Q2",
       "prompt": "為什麼攻擊者通常不把 RSA 私鑰直接留在受害電腦？",
       "options": [
         "因為私鑰會讓 CPU 速度變慢",
@@ -74,7 +74,7 @@
       "explanation": "RSA 私鑰是解密或簽章的重要秘密。若受害者取得私鑰與包裝後的金鑰，就可能恢復 AES 工作金鑰。"
     },
     {
-      "id": "day-003-q3",
+      "id": "S-002-Q3",
       "prompt": "哪一種備份策略最能降低勒索病毒刪除或加密備份的風險？",
       "options": [
         "每天把備份硬碟長時間接在同一台工作站",

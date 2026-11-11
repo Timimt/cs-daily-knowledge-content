@@ -8,6 +8,11 @@ import { staticLessons, type StaticLesson } from "./static-content";
 
 const STORAGE_KEY = "cs-daily-learning-v1";
 const UPDATE_EVENT = "cs-daily-learning-updated";
+const LEGACY_LESSON_IDS: Record<string, string> = {
+  "day-001": "S-001",
+  "day-002": "O-001",
+  "day-003": "S-002",
+};
 
 type LocalAttempt = {
   id: number;
@@ -55,12 +60,47 @@ function readState(): LocalLearningState {
       typeof parsed.records === "object" &&
       Array.isArray(parsed.attempts)
     ) {
-      return parsed as LocalLearningState;
+      const records: Record<string, LearningRecord> = {};
+      for (const [lessonId, record] of Object.entries(
+        parsed.records as Record<string, LearningRecord>,
+      )) {
+        const migratedId = LEGACY_LESSON_IDS[lessonId] ?? lessonId;
+        records[migratedId] = {
+          ...record,
+          lessonId: migratedId,
+          wrongAnswers: (record.wrongAnswers ?? []).map((wrong) => ({
+            ...wrong,
+            questionId: migrateLegacyQuestionId(wrong.questionId),
+          })),
+        };
+      }
+      return {
+        version: 1,
+        records,
+        attempts: (parsed.attempts as LocalAttempt[]).map((attempt) => ({
+          ...attempt,
+          lessonId: LEGACY_LESSON_IDS[attempt.lessonId] ?? attempt.lessonId,
+          wrongAnswers: (attempt.wrongAnswers ?? []).map((wrong) => ({
+            ...wrong,
+            questionId: migrateLegacyQuestionId(wrong.questionId),
+          })),
+        })),
+      };
     }
   } catch {
     // Corrupt local data stays untouched until the user imports a valid backup.
   }
   return emptyState();
+}
+
+function migrateLegacyQuestionId(questionId: string): string {
+  const prefixMap: Record<string, string> = {
+    "day-001": "S-001",
+    "day-002": "O-001",
+    "day-003": "S-002",
+  };
+  const match = /^(day-00[1-3])-q(\d+)$/.exec(questionId);
+  return match ? `${prefixMap[match[1]]}-Q${match[2]}` : questionId;
 }
 
 function writeState(state: LocalLearningState): void {
