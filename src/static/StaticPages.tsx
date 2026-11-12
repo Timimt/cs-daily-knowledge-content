@@ -73,16 +73,15 @@ export function StaticDashboardPage() {
   return (
     <div className="page-container static-home">
       <header className="home-masthead">
-        <p className="page-kicker">CS Notes · 資訊安全筆記</p>
+        <p className="page-kicker">CS Notes · 資訊安全小知識</p>
         <div className="home-intro-grid">
-          <h1 className="home-title">把資安知識整理成能反覆查閱的筆記。</h1>
+          <h1 className="home-title">你好₍ᵔ･•･ᵔ₎。</h1>
           <div className="home-intro-copy">
             <p>
-              這裡只放我整理過的密碼學、Windows、網路與防禦知識。
-              內容保存在 GitHub，不需要帳號，也不追蹤閱讀行為。
+              這裡放一些平常無聊整理過的知識。
             </p>
             <Link to="/knowledge" className="editorial-text-link">
-              瀏覽所有資安筆記
+              瀏覽所有筆記
               <ArrowRight size={16} />
             </Link>
           </div>
@@ -167,10 +166,6 @@ export function StaticDashboardPage() {
           <p className="section-index">02 / Scope</p>
           <h2 id="collection-scope-title">以資訊安全為核心，保留理解攻防所需的系統基礎。</h2>
         </div>
-        <p>
-          網站不建立帳號、不保存閱讀進度、收藏或測驗紀錄。
-          想看什麼就直接讀，所有內容都能回到 GitHub 的版本紀錄。
-        </p>
       </section>
     </div>
   );
